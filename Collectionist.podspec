@@ -18,7 +18,10 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-View Model based data sources for UITableView and UICollectionView. 
+View Model based data sources for UITableView and UICollectionView.
+
+Uses views instead of cells, which allows to reuse the same view for a table, a collection or insert it in a regular view hierarchy. 
+
                        DESC
 
   s.homepage         = "https://github.com/buscarini/Collectionist"
