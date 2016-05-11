@@ -110,14 +110,19 @@ public class CollectionViewDataSource<T: Equatable>: NSObject, UICollectionViewD
 			fatalError("List is required. We shouldn't be here")
 		}
 		
+		return collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath)
+	}
+	
+	public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+		guard let list = self.list else {
+			return
+		}
+
 		let listItem = list.sections[indexPath.section].items[indexPath.row]
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath)
 		
 		if let fillableCell = cell as? Fillable {
 			fillableCell.fill(listItem)
 		}
-		
-		return cell
 	}
 	
 	// MARK : UICollectionViewDelegate
