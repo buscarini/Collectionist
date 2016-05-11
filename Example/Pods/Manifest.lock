@@ -1,0 +1,16 @@
+PODS:
+  - Collectionist (0.1.0)
+
+DEPENDENCIES:
+  - Collectionist (from `../`)
+
+EXTERNAL SOURCES:
+  Collectionist:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Collectionist: d49f6e3430406556aa9bcafa6e47958036d2ff2f
+
+PODFILE CHECKSUM: 99a4bb5c93981ddcf60315dbce0977dd33f981e3
+
+COCOAPODS: 1.0.0.rc.2

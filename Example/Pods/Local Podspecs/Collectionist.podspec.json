@@ -1,0 +1,19 @@
+{
+  "name": "Collectionist",
+  "version": "0.1.0",
+  "summary": "View Model based data sources for UITableView and UICollectionView.",
+  "description": "View Model based data sources for UITableView and UICollectionView.",
+  "homepage": "https://github.com/buscarini/Collectionist",
+  "license": "MIT",
+  "authors": {
+    "José Manuel": "buscarini@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/buscarini/Collectionist.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "Collectionist/Classes/**/*"
+}

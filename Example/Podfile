@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'Collectionist_Example' do
+  pod 'Collectionist', :path => '../'
+
+  target 'Collectionist_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
