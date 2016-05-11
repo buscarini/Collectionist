@@ -8,38 +8,6 @@
 
 import UIKit
 
-public protocol ListItemConfiguration {
-	
-}
-
-public struct TableListItemConfiguration<T: Equatable> : ListItemConfiguration, Equatable {
-	let accessoryType : UITableViewCellAccessoryType
-	var onAccessoryTap : ((ListItem<T>)->())? = nil
-	let indentationLevel : Int
-	let indentationWidth : CGFloat
-	let separatorInset: UIEdgeInsets?
-	
-	static func pure() -> TableListItemConfiguration {
-		return TableListItemConfiguration(
-			accessoryType : .None,
-			onAccessoryTap: nil,
-			indentationLevel: 0,
-			indentationWidth : 10.0,
-			separatorInset: nil
-		)
-	}
-}
-
-public func ==<T>(lhs : TableListItemConfiguration<T>, rhs: TableListItemConfiguration<T>) -> Bool {
-//	guard lhs.swipeActions == rhs.swipeActions else { return false }
-	guard lhs.accessoryType == rhs.accessoryType else { return false }
-	guard (lhs.onAccessoryTap != nil && rhs.onAccessoryTap != nil) || (lhs.onAccessoryTap == nil && rhs.onAccessoryTap == nil) else { return false }
-	guard lhs.indentationLevel == rhs.indentationLevel else { return false }
-	guard lhs.indentationWidth == rhs.indentationWidth else { return false }
-	guard lhs.separatorInset == rhs.separatorInset else { return false }
-	
-	return true
-}
 
 public enum ListScrollPosition : Equatable {
 	case Top
@@ -74,80 +42,6 @@ public func ==(lhs : ListScrollInfo, rhs: ListScrollInfo) -> Bool {
 	guard lhs.animated == rhs.animated else { return false }
 	
 	return true	
-}
-
-public enum ListItemActionStyle : Equatable {
-	case Default
-	case Normal
-}
-
-public func ==(lhs : ListItemActionStyle, rhs: ListItemActionStyle) -> Bool {
-	switch (lhs,rhs) {
-		case (.Default, .Default):
-			return true
-		case (.Normal, .Normal):
-			return true
-		default:
-		return false			
-	}
-}
-
-public struct ListItemAction<T: Equatable> : Equatable {
-	let title : String
-	let style : ListItemActionStyle
-	let tintColor: UIColor
-	let action : (ListItem<T>) -> ()
-}
-
-public func ==<T>(lhs : ListItemAction<T>, rhs: ListItemAction<T>) -> Bool {
-	guard lhs.title == rhs.title else { return false }
-	guard lhs.style == rhs.style else { return false }
-	guard lhs.tintColor == rhs.tintColor else { return false }
-	
-	return true
-}
-
-public struct ListItem<T: Equatable> : Equatable {
-	let nibName : String
-	let cellId : String?
-	let value : T?
-	let configuration : ListItemConfiguration?
-	var swipeActions : [ListItemAction<T>]
-	var onSelect : ((ListItem<T>)->())? = nil
-	var onFocus : ((ListItem<T>)->())? = nil
-}
-
-public func ==<T>(lhs : ListItem<T>, rhs: ListItem<T>) -> Bool {
-	guard lhs.nibName == rhs.nibName else { return false }
-	guard lhs.value == rhs.value else { return false }
-//	guard lhs.configuration == rhs.configuration else { print("configuration different"); return false }
-	guard lhs.swipeActions == rhs.swipeActions else { return false }
-	guard (lhs.onSelect == nil) == (rhs.onSelect == nil) else { return false }
-	guard (lhs.onFocus == nil) == (rhs.onFocus == nil) else { return false }
-	
-	return true
-}
-
-public struct ListSection<T : Equatable> : Equatable {
-	let items : [ListItem<T>]
-}
-
-public func ==<T>(lhs : ListSection<T>, rhs: ListSection<T>) -> Bool {
-	guard lhs.items == rhs.items else { return false }
-	return true
-}
-
-public protocol ListConfiguration {
-	
-}
-
-public struct TableConfiguration : ListConfiguration, Equatable {
-	let fixedRowHeight: CGFloat?
-}
-
-public func ==(lhs : TableConfiguration, rhs: TableConfiguration) -> Bool {
-	guard lhs.fixedRowHeight == rhs.fixedRowHeight else { return false }
-	return true
 }
 
 public struct List<T : Equatable> : Equatable {

@@ -21,6 +21,10 @@
 		85C3E757DC36C23471644419713D171B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
 		9F0E64AEF2F86B289BF3D788F3DB7E9F /* Fillable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D1AACDC0C6ED569F8B625C80F4FA4 /* Fillable.swift */; };
 		9FCECB15AA0F6F01550679F02126273B /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6163F8CAE40EE031547550D21C8741E /* CollectionViewCell.swift */; };
+		AC0BFF1B1CE33010005FBADD /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0BFF1A1CE33010005FBADD /* ListItem.swift */; };
+		AC0BFF1D1CE3302D005FBADD /* ListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0BFF1C1CE3302D005FBADD /* ListSection.swift */; };
+		AC0BFF1F1CE3306D005FBADD /* ListItemConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0BFF1E1CE3306D005FBADD /* ListItemConfiguration.swift */; };
+		AC0BFF211CE33078005FBADD /* ListConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0BFF201CE33078005FBADD /* ListConfiguration.swift */; };
 		CB1DDB1DE81EC056772CD62586166D1C /* Collectionist-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C7DA212D370B1163E4D3E8930D450829 /* Collectionist-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DE73D0C1B7ED78FC5273E2D7E0FDB3BF /* Collectionist-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D89BAFBCAB1EDDB0F8614D3434AF7D6 /* Collectionist-dummy.m */; };
 		FE76342088D65CA9028105FC80AB3602 /* LayoutUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84959D89D31D6C589C739397E96CF21F /* LayoutUtils.swift */; };
@@ -60,6 +64,10 @@
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A09520619EBCE5CD36BFACF6FFFBB156 /* Array.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		A6E23C2329491FDF2E70722DBD513356 /* Pods_Collectionist_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Collectionist_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC0BFF1A1CE33010005FBADD /* ListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
+		AC0BFF1C1CE3302D005FBADD /* ListSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSection.swift; sourceTree = "<group>"; };
+		AC0BFF1E1CE3306D005FBADD /* ListItemConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListItemConfiguration.swift; sourceTree = "<group>"; };
+		AC0BFF201CE33078005FBADD /* ListConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListConfiguration.swift; sourceTree = "<group>"; };
 		B3FFE15982CBF91DFCE877590BAC4CD9 /* Pods-Collectionist_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Collectionist_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		B4D3503F0E7F7F0DCEC64C295F8E1A01 /* Pods-Collectionist_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Collectionist_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		B7F6E41286650FB51A124E37FA832BF1 /* Pods-Collectionist_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Collectionist_Tests.modulemap"; sourceTree = "<group>"; };
@@ -119,6 +127,10 @@
 			isa = PBXGroup;
 			children = (
 				3F9F083B70F4B58167E3FCB50FBA7816 /* List.swift */,
+				AC0BFF201CE33078005FBADD /* ListConfiguration.swift */,
+				AC0BFF1C1CE3302D005FBADD /* ListSection.swift */,
+				AC0BFF1A1CE33010005FBADD /* ListItem.swift */,
+				AC0BFF1E1CE3306D005FBADD /* ListItemConfiguration.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -390,14 +402,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC0BFF1B1CE33010005FBADD /* ListItem.swift in Sources */,
 				0B91615E8AFE661A648EDD937F4BF13E /* Array.swift in Sources */,
 				DE73D0C1B7ED78FC5273E2D7E0FDB3BF /* Collectionist-dummy.m in Sources */,
+				AC0BFF211CE33078005FBADD /* ListConfiguration.swift in Sources */,
 				9FCECB15AA0F6F01550679F02126273B /* CollectionViewCell.swift in Sources */,
 				7C655E7594E9D9766A052726DD548E83 /* CollectionViewDataSource.swift in Sources */,
+				AC0BFF1F1CE3306D005FBADD /* ListItemConfiguration.swift in Sources */,
 				9F0E64AEF2F86B289BF3D788F3DB7E9F /* Fillable.swift in Sources */,
 				FE76342088D65CA9028105FC80AB3602 /* LayoutUtils.swift in Sources */,
 				7C73DB56C6A58407D47DBCA5AFCADAC3 /* List.swift in Sources */,
 				0C3485B9648ED1C12AA90479BA47940C /* TableDataSource.swift in Sources */,
+				AC0BFF1D1CE3302D005FBADD /* ListSection.swift in Sources */,
 				0848E02C3789ED0CA2254C7F640EE88E /* TableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
