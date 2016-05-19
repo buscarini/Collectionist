@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Miscel
+
 public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UITableViewDelegate
 	{
 	
@@ -200,11 +202,11 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 	
 	static func scrollPositionWithPosition(position: ListScrollPosition) -> UITableViewScrollPosition {
 		switch (position) {
-		case (.Top):
+		case (.Begin):
 			return .Top
 		case (.Middle):
 			return .Middle
-		case (.Bottom):
+		case (.End):
 			return .Bottom
 		}
 	}
@@ -214,11 +216,10 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 		guard let tableView = tableView else { return }
 		
 		let allCellIds = List.allCellIds(list)
-//		dispatch_async(dispatch_get_main_queue()) {
-			for cellId in allCellIds {
-				tableView.registerClass(TableViewCell<T>.self, forCellReuseIdentifier: cellId)
-			}
-//		}
+		
+		for cellId in allCellIds {
+			tableView.registerClass(TableViewCell<T>.self, forCellReuseIdentifier: cellId)
+		}
 	}
 	
 	// MARK: UITableViewDataSource
@@ -243,12 +244,9 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 			fatalError("Index out of bounds. This shouldn't happen")
 		}
 		
-		let cell = tableView.dequeueReusableCellWithIdentifier(listItem.cellId ?? listItem.nibName, forIndexPath: indexPath)
-		
-		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
-		
-		return cell
+		return tableView.dequeueReusableCellWithIdentifier(listItem.cellId ?? listItem.nibName, forIndexPath: indexPath)
 	}
+	
 	
 	func configureCell(cell: UITableViewCell,listItem: ListItemType, indexPath : NSIndexPath) {
 		if let fillableCell = cell as? Fillable {
@@ -259,7 +257,7 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 			cell.accessoryType = configuration.accessoryType
 			
 			cell.indentationLevel = configuration.indentationLevel
-			cell.indentationWidth = configuration.indentationWidth
+			cell.indentationWidth ?= configuration.indentationWidth
 			
 			#if os(iOS)
 			if let inset = configuration.separatorInset {
@@ -279,6 +277,17 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 	}
 	
 	public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+	
+		guard let list = self.list else {
+			return
+		}
+
+		guard let listItem = List<T>.itemAt(list, indexPath: indexPath) else {
+			return
+		}
+		
+		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
+		
 		self.estimatedHeights[indexPath] = cell.frame.size.height
 		self.heights[indexPath] = cell.frame.size.height
 	}

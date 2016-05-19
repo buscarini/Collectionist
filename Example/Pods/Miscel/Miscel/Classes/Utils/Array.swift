@@ -8,7 +8,7 @@
 
 import Foundation
 
-func removeDups<S : SequenceType, T : Hashable where S.Generator.Element == T>(source: S) -> [T] {
+public func removeDups<S : SequenceType, T : Hashable where S.Generator.Element == T>(source: S) -> [T] {
 	var buffer = [T]()
 	var added = Set<T>()
 	for elem in source {
@@ -19,3 +19,4 @@ func removeDups<S : SequenceType, T : Hashable where S.Generator.Element == T>(s
 	}
 	return buffer
 }
+

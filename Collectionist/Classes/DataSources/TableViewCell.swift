@@ -8,9 +8,11 @@
 
 import UIKit
 
+import Layitout
+
 public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 
-	var view : UIView?
+	public var view : UIView?
 	var nibName : String?
 	
 	public func fill(value: Any?) {
