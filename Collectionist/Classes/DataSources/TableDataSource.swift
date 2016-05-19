@@ -244,7 +244,11 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 			fatalError("Index out of bounds. This shouldn't happen")
 		}
 		
-		return tableView.dequeueReusableCellWithIdentifier(listItem.cellId ?? listItem.nibName, forIndexPath: indexPath)
+		let cell = tableView.dequeueReusableCellWithIdentifier(listItem.cellId ?? listItem.nibName, forIndexPath: indexPath)
+		
+		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
+
+		return cell
 	}
 	
 	
@@ -277,16 +281,16 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 	}
 	
 	public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-	
-		guard let list = self.list else {
-			return
-		}
-
-		guard let listItem = List<T>.itemAt(list, indexPath: indexPath) else {
-			return
-		}
-		
-		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
+//	
+//		guard let list = self.list else {
+//			return
+//		}
+//
+//		guard let listItem = List<T>.itemAt(list, indexPath: indexPath) else {
+//			return
+//		}
+//		
+//		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
 		
 		self.estimatedHeights[indexPath] = cell.frame.size.height
 		self.heights[indexPath] = cell.frame.size.height
