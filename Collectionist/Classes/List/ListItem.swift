@@ -8,48 +8,33 @@
 
 import Foundation
 
-public enum ListItemActionStyle : Equatable {
-	case Default
-	case Normal
-}
-
-public func ==(lhs : ListItemActionStyle, rhs: ListItemActionStyle) -> Bool {
-	switch (lhs,rhs) {
-		case (.Default, .Default):
-			return true
-		case (.Normal, .Normal):
-			return true
-		default:
-		return false			
+public struct ListItem<T: Equatable>: Equatable {
+	public let nibName: String
+	public let cellId: String?
+	public let value: T?
+	public let configuration: ListItemConfiguration?
+	public var swipeActions: [ListItemAction<T>]
+	public var onSelect: ((ListItem<T>)->())? = nil
+	public var onFocus: ((ListItem<T>)->())? = nil
+	
+	public init(nibName: String,
+				cellId: String?,
+				value: T?,
+				configuration: ListItemConfiguration? = nil,
+				swipeActions: [ListItemAction<T>] = [],
+				onSelect: ((ListItem<T>)->())? = nil,
+				onFocus: ((ListItem<T>)->())? = nil) {
+		self.nibName = nibName
+		self.cellId = cellId
+		self.value = value
+		self.configuration = configuration
+		self.swipeActions = swipeActions
+		self.onSelect = onSelect
+		self.onFocus = onFocus
 	}
 }
 
-public struct ListItemAction<T: Equatable> : Equatable {
-	let title : String
-	let style : ListItemActionStyle
-	let tintColor: UIColor
-	let action : (ListItem<T>) -> ()
-}
-
-public func ==<T>(lhs : ListItemAction<T>, rhs: ListItemAction<T>) -> Bool {
-	guard lhs.title == rhs.title else { return false }
-	guard lhs.style == rhs.style else { return false }
-	guard lhs.tintColor == rhs.tintColor else { return false }
-	
-	return true
-}
-
-public struct ListItem<T: Equatable> : Equatable {
-	public let nibName : String
-	public let cellId : String?
-	public let value : T?
-	public let configuration : ListItemConfiguration?
-	public var swipeActions : [ListItemAction<T>]
-	public var onSelect : ((ListItem<T>)->())? = nil
-	public var onFocus : ((ListItem<T>)->())? = nil
-}
-
-public func ==<T>(lhs : ListItem<T>, rhs: ListItem<T>) -> Bool {
+public func ==<T>(lhs: ListItem<T>, rhs: ListItem<T>) -> Bool {
 	guard lhs.nibName == rhs.nibName else { return false }
 	guard lhs.value == rhs.value else { return false }
 //	guard lhs.configuration == rhs.configuration else { print("configuration different"); return false }

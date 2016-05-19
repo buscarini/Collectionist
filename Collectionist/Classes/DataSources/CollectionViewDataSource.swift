@@ -73,17 +73,17 @@ public class CollectionViewDataSource<T: Equatable>: NSObject, UICollectionViewD
 		}
 		
 		switch (position,scrollDirection) {
-			case (.Top,.Horizontal):
+			case (.Begin,.Horizontal):
 				return .Left
-			case (.Top,.Vertical):
+			case (.Begin,.Vertical):
 				return .Top
 			case (.Middle,.Vertical):
 				return .CenteredVertically
 			case (.Middle,.Horizontal):
 				return .CenteredHorizontally
-			case (.Bottom, .Vertical):
+			case (.End, .Vertical):
 				return .Bottom
-			case (.Bottom, .Horizontal):
+			case (.End, .Horizontal):
 					return .Right
 		}
 	}

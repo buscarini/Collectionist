@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Layitout
+
 public class CollectionViewCell<T : Equatable>: UICollectionViewCell, Fillable {
 	var view : UIView?
 	var nibName : String?

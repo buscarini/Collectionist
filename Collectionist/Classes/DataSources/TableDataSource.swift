@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Miscel
+
 public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UITableViewDelegate
 	{
 	
@@ -200,11 +202,11 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 	
 	static func scrollPositionWithPosition(position: ListScrollPosition) -> UITableViewScrollPosition {
 		switch (position) {
-		case (.Top):
+		case (.Begin):
 			return .Top
 		case (.Middle):
 			return .Middle
-		case (.Bottom):
+		case (.End):
 			return .Bottom
 		}
 	}
@@ -255,7 +257,7 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 			cell.accessoryType = configuration.accessoryType
 			
 			cell.indentationLevel = configuration.indentationLevel
-			cell.indentationWidth = configuration.indentationWidth
+			cell.indentationWidth ?= configuration.indentationWidth
 			
 			#if os(iOS)
 			if let inset = configuration.separatorInset {

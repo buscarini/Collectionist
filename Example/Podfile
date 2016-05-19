@@ -1,11 +1,15 @@
 use_frameworks!
 
 target 'Collectionist_Example' do
-  pod 'Collectionist', :path => '../'
 
-  target 'Collectionist_Tests' do
-    inherit! :search_paths
+	pod 'Layitout', :git => 'https://github.com/buscarini/layitout.git', :branch => 'master'
+	pod 'Miscel', :git => 'https://github.com/buscarini/miscel.git', :branch => 'master'
+	
+	pod 'Collectionist', :path => '../'
+
+	target 'Collectionist_Tests' do
+		inherit! :search_paths
 
     
-  end
+	end
 end

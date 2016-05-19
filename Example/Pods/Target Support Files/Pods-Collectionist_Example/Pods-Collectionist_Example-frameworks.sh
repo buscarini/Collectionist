@@ -85,7 +85,11 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Collectionist/Collectionist.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Layitout/Layitout.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Miscel/Miscel.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Collectionist/Collectionist.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Layitout/Layitout.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Miscel/Miscel.framework"
 fi
