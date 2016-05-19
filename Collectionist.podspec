@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Collectionist"
-  s.version          = "0.1.1"
+  s.version          = "0.1.2"
   s.summary          = "View Model based data sources for UITableView and UICollectionView."
 
   s.description      = <<-DESC
