@@ -15,6 +15,10 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 	public var view : UIView?
 	var nibName : String?
 	
+	public init(reuseId: String) {
+		super.init(style: .Default, reuseIdentifier: reuseId)
+	}
+	
 	public func fill(value: Any?) {
 		guard let listItem = value as? ListItem<T> else {
 			return

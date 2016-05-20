@@ -1,5 +1,5 @@
 //
-//  TableDataSource.swift
+//  TableDataSourceOld.swift
 //  OnePodcast
 //
 //  Created by Jose Manuel Sánchez Peñarroja on 23/10/15.
@@ -10,7 +10,7 @@ import UIKit
 
 import Miscel
 
-public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UITableViewDelegate
+public class TableDataSourceOld<T:Equatable> : NSObject, UITableViewDataSource, UITableViewDelegate
 	{
 	
 	public typealias ListType = List<T>
@@ -36,13 +36,13 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 			view?.rowHeight = UITableViewAutomaticDimension
 			view?.estimatedRowHeight = 44
 			
-			TableDataSource.registerViews(self.list,tableView: self.view)
+			TableDataSourceOld.registerViews(self.list,tableView: self.view)
 		}
 	}
 	
 	public var list : ListType? {
 		didSet {
-			TableDataSource.registerViews(self.list,tableView: self.view)
+			TableDataSourceOld.registerViews(self.list,tableView: self.view)
 			self.update(oldValue, newList: list)
 		}
 	}
@@ -67,7 +67,7 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 		
 		dispatch_async(dispatch_get_main_queue()) {
 			if let scrollInfo = newList?.scrollInfo, let indexPath = scrollInfo.indexPath {
-				self.view?.scrollToRowAtIndexPath(indexPath, atScrollPosition: TableDataSource.scrollPositionWithPosition(scrollInfo.position), animated: scrollInfo.animated)
+				self.view?.scrollToRowAtIndexPath(indexPath, atScrollPosition: TableDataSourceOld.scrollPositionWithPosition(scrollInfo.position), animated: scrollInfo.animated)
 			}
 		}
 	}
@@ -108,7 +108,7 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 				if changedIndexPaths.count>0 {
 					dispatch_async(dispatch_get_main_queue()) {
 
-						self.heights = TableDataSource.updateIndexPathsWithFill(newList, view: view, indexPaths: changedIndexPaths, cellHeights: self.heights)
+						self.heights = TableDataSourceOld.updateIndexPathsWithFill(newList, view: view, indexPaths: changedIndexPaths, cellHeights: self.heights)
 						
 //						if let currentList = self.list where currentList == newList {
 						if self.list == newList {
@@ -244,13 +244,11 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 			fatalError("Index out of bounds. This shouldn't happen")
 		}
 		
-		return tableView.dequeueReusableCellWithIdentifier(listItem.reuseIdentifier, forIndexPath: indexPath)
+		let cell = tableView.dequeueReusableCellWithIdentifier(listItem.cellId ?? listItem.nibName, forIndexPath: indexPath)
 		
-//		let cell = tableView.dequeueReusableCellWithIdentifier(listItem.cellId ?? listItem.nibName, forIndexPath: indexPath)
-//		
-//		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
-//
-//		return cell
+		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
+
+		return cell
 	}
 	
 	
@@ -279,50 +277,12 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 	}
 	
 	public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-	
-		guard let height = self.heights[indexPath] else {
-
-			let listItem = self.list.flatMap { List<T>.itemAt($0, indexPath: indexPath) }
-			
-			if let listItem = listItem {
-				let reuseId = listItem.reuseIdentifier
-				let cell = TableViewCell<T>(reuseId: reuseId)
-				self.configureCell(cell, listItem: listItem, indexPath: indexPath)
-
-				cell.contentView.translatesAutoresizingMaskIntoConstraints = false
-				cell.contentView.addConstraint(cell.contentView.widthAnchor.constraintEqualToConstant(tableView.frame.size.width))
-
-				cell.setNeedsLayout()
-				cell.layoutIfNeeded()
-
-				let size = cell.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-				
-				print(size)
-				self.heights[indexPath] = size.height
-				return size.height
-			}
-			
-			return UITableViewAutomaticDimension
-		}
-	
-		return height
-//		return self.heights[indexPath] ?? UITableViewAutomaticDimension
+		return self.heights[indexPath] ?? UITableViewAutomaticDimension
 	}
 	
 	public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-	
-		guard let list = self.list else {
-			return
-		}
-
-		guard let listItem = List<T>.itemAt(list, indexPath: indexPath) else {
-			return
-		}
-		
-		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
-		
-//		self.estimatedHeights[indexPath] = cell.frame.size.height
-//		self.heights[indexPath] = cell.frame.size.height
+		self.estimatedHeights[indexPath] = cell.frame.size.height
+		self.heights[indexPath] = cell.frame.size.height
 	}
 	
 	@available(iOS 9.0, *)
@@ -383,7 +343,7 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 		
 		return listItem.swipeActions.map {
 			action in
-			return TableDataSource.rowAction(tableView,item: listItem, action: action)
+			return TableDataSourceOld.rowAction(tableView,item: listItem, action: action)
 		}
 	}
 	
