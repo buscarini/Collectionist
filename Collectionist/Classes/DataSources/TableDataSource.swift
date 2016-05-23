@@ -244,13 +244,11 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 			fatalError("Index out of bounds. This shouldn't happen")
 		}
 		
-		return tableView.dequeueReusableCellWithIdentifier(listItem.reuseIdentifier, forIndexPath: indexPath)
+		let cell = tableView.dequeueReusableCellWithIdentifier(listItem.cellId ?? listItem.nibName, forIndexPath: indexPath)
 		
-//		let cell = tableView.dequeueReusableCellWithIdentifier(listItem.cellId ?? listItem.nibName, forIndexPath: indexPath)
-//		
-//		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
-//
-//		return cell
+		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
+
+		return cell
 	}
 	
 	
@@ -279,50 +277,12 @@ public class TableDataSource<T:Equatable> : NSObject, UITableViewDataSource, UIT
 	}
 	
 	public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-	
-		guard let height = self.heights[indexPath] else {
-
-			let listItem = self.list.flatMap { List<T>.itemAt($0, indexPath: indexPath) }
-			
-			if let listItem = listItem {
-				let reuseId = listItem.reuseIdentifier
-				let cell = TableViewCell<T>(reuseId: reuseId)
-				self.configureCell(cell, listItem: listItem, indexPath: indexPath)
-
-				cell.contentView.translatesAutoresizingMaskIntoConstraints = false
-				cell.contentView.addConstraint(cell.contentView.widthAnchor.constraintEqualToConstant(tableView.frame.size.width))
-
-				cell.setNeedsLayout()
-				cell.layoutIfNeeded()
-
-				let size = cell.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-				
-				print(size)
-				self.heights[indexPath] = size.height
-				return size.height
-			}
-			
-			return UITableViewAutomaticDimension
-		}
-	
-		return height
-//		return self.heights[indexPath] ?? UITableViewAutomaticDimension
+		return self.heights[indexPath] ?? UITableViewAutomaticDimension
 	}
 	
 	public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-	
-		guard let list = self.list else {
-			return
-		}
-
-		guard let listItem = List<T>.itemAt(list, indexPath: indexPath) else {
-			return
-		}
-		
-		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
-		
-//		self.estimatedHeights[indexPath] = cell.frame.size.height
-//		self.heights[indexPath] = cell.frame.size.height
+		self.estimatedHeights[indexPath] = cell.frame.size.height
+		self.heights[indexPath] = cell.frame.size.height
 	}
 	
 	@available(iOS 9.0, *)
