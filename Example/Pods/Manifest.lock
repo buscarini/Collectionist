@@ -1,15 +1,15 @@
 PODS:
-  - Collectionist (0.1.0):
+  - Collectionist (0.1.2):
     - Layitout
     - Miscel
   - Layitout (0.1.2)
-  - Miscel (0.1.3):
+  - Miscel (0.1.8):
     - Layitout
 
 DEPENDENCIES:
   - Collectionist (from `../`)
   - Layitout (from `https://github.com/buscarini/layitout.git`, branch `master`)
-  - Miscel (from `../../miscel`)
+  - Miscel (from `https://github.com/buscarini/miscel.git`, branch `master`)
 
 EXTERNAL SOURCES:
   Collectionist:
@@ -18,18 +18,22 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/buscarini/layitout.git
   Miscel:
-    :path: ../../miscel
+    :branch: master
+    :git: https://github.com/buscarini/miscel.git
 
 CHECKOUT OPTIONS:
   Layitout:
     :commit: e5bd5955149e8e7008b2aa1b57c4d77ff74cc20a
     :git: https://github.com/buscarini/layitout.git
+  Miscel:
+    :commit: 3b60e84a4da0fbf1858f56fe9b1126c5faffaa45
+    :git: https://github.com/buscarini/miscel.git
 
 SPEC CHECKSUMS:
-  Collectionist: 7d1d75eee7f1b02bb18d38bdf76e991233116150
+  Collectionist: 469b927f3e3de83ed59fbcb3860df55f750e3f37
   Layitout: 8ab04d3f4d09b945fca1a55902b2a993376056b8
-  Miscel: a610032afbe9cbf8e83cd3cc3a7eb739f116d762
+  Miscel: 97e2add3ae619e7a9210ea56d00c657eed9678c9
 
-PODFILE CHECKSUM: c1417bd1bbd9dcaf2e25e6caf5afa7cd9a3097d4
+PODFILE CHECKSUM: 69c98060a1b062046aef0349696161320acaf795
 
 COCOAPODS: 1.0.0

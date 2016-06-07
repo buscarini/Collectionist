@@ -1,6 +1,6 @@
 //
 //  Paths.swift
-//  OnePodcast
+//  Miscel
 //
 //  Created by Jose Manuel Sánchez Peñarroja on 28/10/15.
 //  Copyright © 2015 vitaminew. All rights reserved.

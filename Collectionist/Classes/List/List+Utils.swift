@@ -98,7 +98,7 @@ public extension List {
 	}
 	
 	public static func allCellIds(list: List) -> [String] {
-		return removeDups(list.sections.flatMap {
+		return removingDuplicates(list.sections.flatMap {
 			section in
 			return section.items.map {
 				item in

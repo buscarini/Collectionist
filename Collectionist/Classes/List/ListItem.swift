@@ -32,6 +32,10 @@ public struct ListItem<T: Equatable>: Equatable {
 		self.onSelect = onSelect
 		self.onFocus = onFocus
 	}
+	
+	var reuseIdentifier: String {
+		return self.cellId ?? self.nibName
+	}
 }
 
 public func ==<T>(lhs: ListItem<T>, rhs: ListItem<T>) -> Bool {
