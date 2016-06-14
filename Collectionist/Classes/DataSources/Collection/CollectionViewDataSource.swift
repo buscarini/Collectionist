@@ -8,41 +8,65 @@
 
 import UIKit
 
-public class CollectionViewDataSource<T: Equatable>: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
+public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT: Equatable>: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
 
-	public var view : UICollectionView? {
+	public typealias ListType = List<T,HeaderT, FooterT>
+	public typealias ListSectionType = ListSection<T,HeaderT, FooterT>
+	public typealias ListItemType = ListItem<T>
+
+	private var refreshControl: UIRefreshControl?
+
+	public init(view: UICollectionView) {
+		self.view = view
+		
+		self.refreshControl = UIRefreshControl()
+
+		super.init()
+		
+		self.refreshControl?.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
+
+		self.viewChanged()
+	}
+	
+	public var view : UICollectionView {
 		didSet {
-			view?.dataSource = self
-			view?.delegate = self
-			
-			CollectionViewDataSource.registerViews(self.view)
+			self.viewChanged()
 		}
 	}
 	
-	public var list : List<T>? {
+	public var list : ListType? {
 		didSet {
+			CollectionViewDataSource.registerViews(self.list, collectionView: self.view)
 			self.update(oldValue, newList: list)
 		}
 	}
 	
-	public override init() {
-		super.init()
+	private func viewChanged() {
+		CollectionViewDataSource.registerViews(self.list, collectionView: self.view)
+			
+		self.view.dataSource = self
+		self.view.delegate = self			
 	}
 	
-	private func update<T>(oldList: List<T>?, newList: List<T>?) {
+	private func update(oldList: ListType?, newList: ListType?) {
 		self.updateView(oldList, newList: newList)
 		
-		if let list = newList, let scrollInfo = self.list?.scrollInfo, let indexPath = scrollInfo.indexPath where List<T>.indexPathInsideBounds(list, indexPath: indexPath) {
-			self.view?.scrollToItemAtIndexPath(indexPath, atScrollPosition:  CollectionViewDataSource.scrollPositionWithPosition(scrollInfo.position, collectionView: self.view), animated: scrollInfo.animated)
+		self.refreshControl?.endRefreshing()
+		if let refreshControl = self.refreshControl where newList?.configuration?.onRefresh != nil {
+			self.view.addSubview(refreshControl)
+			self.view.alwaysBounceVertical = true
+		}
+		else {
+			self.refreshControl?.removeFromSuperview()
+		}
+
+		if let list = newList, let scrollInfo = self.list?.scrollInfo, let indexPath = scrollInfo.indexPath where ListType.indexPathInsideBounds(list, indexPath: indexPath) {
+			self.view.scrollToItemAtIndexPath(indexPath, atScrollPosition:  CollectionViewDataSource.scrollPositionWithPosition(scrollInfo.position, collectionView: self.view), animated: scrollInfo.animated)
 		}
 	}
 	
-	private func updateView<T>(oldList: List<T>?, newList: List<T>?) {
-		guard let view = self.view else {
-			return
-		}
-		
-		if	let oldList = oldList, let newList = newList where List<T>.sameItemsCount(oldList,list2: newList) {
+	private func updateView(oldList: ListType?, newList: ListType?) {
+		if	let oldList = oldList, let newList = newList where ListType.sameItemsCount(oldList,list2: newList) {
 			
 			let visibleIndexPaths = view.indexPathsForVisibleItems()
 			
@@ -55,7 +79,7 @@ public class CollectionViewDataSource<T: Equatable>: NSObject, UICollectionViewD
 			}
 		}
 		else {
-			self.view?.reloadData()
+			self.view.reloadData()
 		}
 	}
 	
@@ -88,8 +112,21 @@ public class CollectionViewDataSource<T: Equatable>: NSObject, UICollectionViewD
 		}
 	}
 	
-	static func registerViews(collectionView : UICollectionView?) {
-		collectionView?.registerClass(CollectionViewCell<T>.self, forCellWithReuseIdentifier: "cell")
+	public static func registerViews(list: ListType?, collectionView : UICollectionView?) {
+		guard let list = list else { return }
+		
+		let allReusableIds = List.allReusableIds(list)
+		for reusableId in allReusableIds {
+			collectionView?.registerClass(CollectionViewCell<T>.self, forCellWithReuseIdentifier: reusableId)
+		}
+	}
+	
+	// MARK: Pull to Refresh
+	func refresh(sender: AnyObject?) {
+		guard let list = self.list else { return }
+		guard let configuration = list.configuration else { return }
+		
+		configuration.onRefresh?()
 	}
 	
 	// MARK: UICollectionViewDataSource
@@ -110,7 +147,14 @@ public class CollectionViewDataSource<T: Equatable>: NSObject, UICollectionViewD
 			fatalError("List is required. We shouldn't be here")
 		}
 		
-		return collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath)
+		let listItem = list.sections[indexPath.section].items[indexPath.row]
+		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(listItem.cellId, forIndexPath: indexPath)
+		
+		if let fillableCell = cell as? Fillable {
+			fillableCell.fill(listItem)
+		}
+		
+		return cell
 	}
 	
 	public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {

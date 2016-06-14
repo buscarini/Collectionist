@@ -1,9 +1,9 @@
 PODS:
-  - Collectionist (0.1.2):
+  - Collectionist (0.1.3):
     - Layitout
     - Miscel
   - Layitout (0.1.2)
-  - Miscel (0.1.8):
+  - Miscel (0.1.9):
     - Layitout
 
 DEPENDENCIES:
@@ -26,13 +26,13 @@ CHECKOUT OPTIONS:
     :commit: e5bd5955149e8e7008b2aa1b57c4d77ff74cc20a
     :git: https://github.com/buscarini/layitout.git
   Miscel:
-    :commit: 3b60e84a4da0fbf1858f56fe9b1126c5faffaa45
+    :commit: 51ece09e6255c106a285130346ad9008e79a4f21
     :git: https://github.com/buscarini/miscel.git
 
 SPEC CHECKSUMS:
-  Collectionist: 469b927f3e3de83ed59fbcb3860df55f750e3f37
+  Collectionist: b3771449fa59d8a3948ee1ea43bfdf3810e3eb16
   Layitout: 8ab04d3f4d09b945fca1a55902b2a993376056b8
-  Miscel: 97e2add3ae619e7a9210ea56d00c657eed9678c9
+  Miscel: 05fe6271486c0acdf9077bfa9cddf6811c0427b7
 
 PODFILE CHECKSUM: 69c98060a1b062046aef0349696161320acaf795
 

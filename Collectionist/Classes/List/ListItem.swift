@@ -10,7 +10,7 @@ import Foundation
 
 public struct ListItem<T: Equatable>: Equatable {
 	public let nibName: String
-	public let cellId: String?
+	public let reusableId: String?
 	public let value: T?
 	public let configuration: ListItemConfiguration?
 	public var swipeActions: [ListItemAction<T>]
@@ -18,14 +18,14 @@ public struct ListItem<T: Equatable>: Equatable {
 	public var onFocus: ((ListItem<T>)->())? = nil
 	
 	public init(nibName: String,
-				cellId: String?,
+				reusableId: String?,
 				value: T?,
 				configuration: ListItemConfiguration? = nil,
 				swipeActions: [ListItemAction<T>] = [],
 				onSelect: ((ListItem<T>)->())? = nil,
 				onFocus: ((ListItem<T>)->())? = nil) {
 		self.nibName = nibName
-		self.cellId = cellId
+		self.reusableId = reusableId
 		self.value = value
 		self.configuration = configuration
 		self.swipeActions = swipeActions
@@ -33,13 +33,14 @@ public struct ListItem<T: Equatable>: Equatable {
 		self.onFocus = onFocus
 	}
 	
-	var reuseIdentifier: String {
-		return self.cellId ?? self.nibName
+	var cellId: String {
+		return reusableId ?? nibName
 	}
 }
 
 public func ==<T>(lhs: ListItem<T>, rhs: ListItem<T>) -> Bool {
 	guard lhs.nibName == rhs.nibName else { return false }
+	guard lhs.reusableId == rhs.reusableId else { return false }
 	guard lhs.value == rhs.value else { return false }
 //	guard lhs.configuration == rhs.configuration else { print("configuration different"); return false }
 	guard lhs.swipeActions == rhs.swipeActions else { return false }

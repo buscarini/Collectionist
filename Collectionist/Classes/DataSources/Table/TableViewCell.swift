@@ -45,7 +45,17 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 		
 		if let fillable = subview as? Fillable {
 			fillable.fill(listItem.value)
-		}	
+		}
+		
+		self.update(listItem.configuration as? TableListItemConfiguration<T>)
+	}
+	
+	func update(config: TableListItemConfiguration<T>?) {
+		guard let config = config else { return }
+		self.accessoryType = config.accessoryType
+		self.separatorInset = config.separatorInset ?? UIEdgeInsetsZero
+		_ = config.indentationLevel.map { self.indentationLevel = $0 }
+		_ = config.indentationWidth.map { self.indentationWidth = $0 }
 	}
 	
 	func viewFor(nibName : String?) -> UIView? {

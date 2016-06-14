@@ -19,7 +19,14 @@ extension UINavigationController {
 	public func popViewController(animated: Bool, completion: () -> ()) {
 		CATransaction.begin()
 		CATransaction.setCompletionBlock(completion)
-		popViewControllerAnimated(true)
+		popViewControllerAnimated(animated)
+		CATransaction.commit()
+	}
+	
+	public func replaceViewControllers(viewControllers: [UIViewController], animated: Bool, completion: () -> ()) {
+		CATransaction.begin()
+		CATransaction.setCompletionBlock(completion)
+		setViewControllers(viewControllers, animated: animated)
 		CATransaction.commit()
 	}
 }
