@@ -9,7 +9,7 @@
 import Foundation
 
 public struct ListScrollInfo: Equatable {
-	public let indexPath: NSIndexPath?
+	public let indexPath: IndexPath?
 	public let position: ListScrollPosition
 	public let animated: Bool = true
 }

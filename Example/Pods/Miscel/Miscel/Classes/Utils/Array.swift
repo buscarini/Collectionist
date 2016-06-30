@@ -8,7 +8,7 @@
 
 import Foundation
 
-public func removingDuplicates<S : SequenceType, T : Hashable where S.Generator.Element == T>(source: S) -> [T] {
+public func removingDuplicates<S: Sequence, T : Hashable where S.Iterator.Element == T>(source: S) -> [T] {
 	var buffer = [T]()
 	var added = Set<T>()
 	for elem in source {

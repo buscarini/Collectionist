@@ -16,7 +16,7 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 	var nibName : String?
 	
 	public init(reuseId: String) {
-		super.init(style: .Default, reuseIdentifier: reuseId)
+		super.init(style: .default, reuseIdentifier: reuseId)
 	}
 	
 	public func fill(value: Any?) {
@@ -33,21 +33,21 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 			subview = view
 		}
 		else {
-			subview = viewFor(listItem.nibName)
+			subview = viewFor(nibName: listItem.nibName)
 			if let subview = subview {
 				view?.removeFromSuperview()
 				view = subview
 				self.contentView.addSubview(subview)
 				subview.translatesAutoresizingMaskIntoConstraints = false
-				Layout.fill(self.contentView,view: subview)
+				Layout.fill(container: self.contentView,view: subview)
 			}
 		}
 		
 		if let fillable = subview as? Fillable {
-			fillable.fill(listItem.value)
+			fillable.fill(value: listItem.value)
 		}
 		
-		self.update(listItem.configuration as? TableListItemConfiguration<T>)
+		self.update(config: listItem.configuration as? TableListItemConfiguration<T>)
 	}
 	
 	func update(config: TableListItemConfiguration<T>?) {
@@ -63,10 +63,7 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 			return nil
 		}
 		
-		if let views = NSBundle.mainBundle().loadNibNamed(nibName, owner: self, options: nil) {
-			return views.first as? UIView
-		}
-		
-		return nil
+		let views = Bundle.main().loadNibNamed(nibName, owner: self, options: nil)
+		return views.first as? UIView
 	}	
 }

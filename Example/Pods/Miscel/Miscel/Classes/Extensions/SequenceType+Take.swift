@@ -8,13 +8,13 @@
 
 import Foundation
 
-extension SequenceType where SubSequence : SequenceType, SubSequence.Generator.Element == Generator.Element, SubSequence.SubSequence == SubSequence {
+extension Sequence where SubSequence : Sequence, SubSequence.Iterator.Element == Iterator.Element, SubSequence.SubSequence == SubSequence {
 
-	func takeFirst(n: Int = 1) -> AnySequence<Self.Generator.Element> {
+	func takeFirst(n: Int = 1) -> AnySequence<Self.Iterator.Element> {
 		return self.prefix(n)
 	}
 	
-	func takeLast(n: Int = 1) -> AnySequence<Self.Generator.Element> {
+	func takeLast(n: Int = 1) -> AnySequence<Self.Iterator.Element> {
 		return self.suffix(n)
 	}
 }

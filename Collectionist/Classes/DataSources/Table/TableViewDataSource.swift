@@ -17,14 +17,14 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	public typealias ListSectionType = ListSection<T,HeaderT, FooterT>
 	public typealias ListItemType = ListItem<T>
 
-	private var estimatedHeights : [NSIndexPath: CGFloat] = [:]
-	private var heights : [NSIndexPath: CGFloat] = [:]
+	private var estimatedHeights : [IndexPath: CGFloat] = [:]
+	private var heights : [IndexPath: CGFloat] = [:]
 	
 	private var refreshControl: UIRefreshControl?
 
 	public var viewDidScroll : (() -> ())? = nil
 	
-	private lazy var updateQueue: dispatch_queue_t = dispatch_queue_create("TableDataSource update queue", DISPATCH_QUEUE_SERIAL)
+	private lazy var updateQueue: DispatchQueue = DispatchQueue(label: "TableDataSource update queue", attributes: .serial)
 	
 	public init(view: UITableView) {
 		self.view = view
@@ -33,7 +33,7 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	
 		super.init()
 		
-		self.refreshControl?.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
+		self.refreshControl?.addTarget(self, action: Selector("refresh:"), for: .valueChanged)
 		self.viewChanged()
 	}
 	
@@ -45,13 +45,13 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	
 	public var list : ListType? {
 		didSet {
-			TableViewDataSource.registerViews(self.list,tableView: self.view)
-			self.update(oldValue, newList: list)
+			TableViewDataSource.registerViews(list: self.list,tableView: self.view)
+			self.update(oldList: oldValue, newList: list)
 		}
 	}
 	
 	private func viewChanged() {
-		TableViewDataSource.registerViews(self.list,tableView: self.view)
+		TableViewDataSource.registerViews(list: self.list,tableView: self.view)
 			
 		self.view.dataSource = self
 		self.view.delegate = self
@@ -80,29 +80,31 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	}
 	
 	private func update(oldList: ListType?, newList: ListType?) {
-		self.updateSections(oldList, newList: newList) {
-			self.updateHeaderFooter(newList)
-			self.updateScroll(newList)
-			self.updatePullToRefresh(newList)
+		self.updateSections(oldList: oldList, newList: newList) {
+			self.updateHeaderFooter(newList: newList)
+			self.updateScroll(newList: newList)
+			self.updatePullToRefresh(newList: newList)
 		}
 	}
 	
 	private func updateSections(oldList: ListType?, newList: ListType?, completion: (() -> ())?) {
 		view.rowHeight = UITableViewAutomaticDimension
 	
-		dispatch_async(self.updateQueue) {
-			if	let oldList = oldList, let newList = newList where ListType.sameItemsCount(oldList,list2: newList) {
+		self.updateQueue.async {
+//		dispatch_async(self.updateQueue) {
+			if	let oldList = oldList, let newList = newList where ListType.sameItemsCount(oldList, newList) {
 				
 				let visibleIndexPaths = self.view.indexPathsForVisibleRows
-				let changedIndexPaths = ListType.itemsChangedPaths(oldList,list2: newList).filter {
+				let changedIndexPaths = ListType.itemsChangedPaths(oldList, newList).filter {
 					indexPath in
-					return visibleIndexPaths?.contains(indexPath) ?? true
+					return visibleIndexPaths?.contains(indexPath as IndexPath) ?? true
 				}
 				
 				if changedIndexPaths.count>0 {
-					dispatch_async(dispatch_get_main_queue()) {
+					DispatchQueue.main.async {
+//					dispatch_async(dispatch_get_main_queue()) {
 
-						self.heights = TableViewDataSource.updateIndexPathsWithFill(newList, view: self.view, indexPaths: changedIndexPaths, cellHeights: self.heights)
+						self.heights = TableViewDataSource.updateIndexPathsWithFill(newList: newList, view: self.view, indexPaths: changedIndexPaths, cellHeights: self.heights)
 
 
 						if let currentList = self.list where currentList == newList {
@@ -117,13 +119,13 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 					}
 				}
 				else {
-					dispatch_async(dispatch_get_main_queue()) {
+					DispatchQueue.main.async {
 						completion?()
 					}
 				}
 			}
 			else {
-				dispatch_async(dispatch_get_main_queue()) {
+				DispatchQueue.main.async {
 					self.view.reloadData()
 					self.heights.removeAll()
 					completion?()
@@ -133,18 +135,18 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	}
 	
 	private func updateHeaderFooter(newList: ListType?) {
-		let headerView = newList?.header?.createView(self)
-		headerView?.frame.size = headerView?.size(self.view.bounds.size.width) ?? CGSizeZero
+		let headerView = newList?.header?.createView(owner: self)
+		headerView?.frame.size = headerView?.size(forWidth: self.view.bounds.size.width) ?? CGSize.zero
 		self.view.tableHeaderView = headerView
 		
-		let footerView = newList?.footer?.createView(self)
-		footerView?.frame.size = footerView?.size(self.view.bounds.size.width) ?? CGSize(width: 1, height: 1)
+		let footerView = newList?.footer?.createView(owner: self)
+		footerView?.frame.size = footerView?.size(forWidth: self.view.bounds.size.width) ?? CGSize(width: 1, height: 1)
 		self.view.tableFooterView = footerView ?? UIView()
 	}
 	
 	private func updateScroll(newList: ListType?) {
 		if let scrollInfo = newList?.scrollInfo, let indexPath = scrollInfo.indexPath {
-			self.view.scrollToRowAtIndexPath(indexPath, atScrollPosition: TableViewDataSource.scrollPositionWithPosition(scrollInfo.position), animated: scrollInfo.animated)
+			self.view.scrollToRow(at: indexPath, at: TableViewDataSource.scrollPositionWithPosition(position: scrollInfo.position), animated: scrollInfo.animated)
 		}
 	}
 	
@@ -158,13 +160,13 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 		}
 	}
 	
-	public static func readCellHeights(view: UITableView, heights: [NSIndexPath : CGFloat]) -> [NSIndexPath : CGFloat]? {
+	public static func readCellHeights(view: UITableView, heights: [IndexPath : CGFloat]) -> [IndexPath : CGFloat]? {
 		
 		guard let visibleIndexPaths = view.indexPathsForVisibleRows else { return nil }
 		
 		var result = heights
 		for indexPath in visibleIndexPaths {
-			if let cell = view.cellForRowAtIndexPath(indexPath) {
+			if let cell = view.cellForRow(at: indexPath) {
 				result[indexPath] = cell.frame.size.height
 			}
 		}
@@ -172,10 +174,10 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 		return result
 	}
 	
-	public static func updateIndexPathsWithFill(newList: ListType,view : UITableView, indexPaths: [NSIndexPath], cellHeights : [NSIndexPath: CGFloat]) -> [NSIndexPath: CGFloat] {
+	public static func updateIndexPathsWithFill(newList: ListType,view : UITableView, indexPaths: [IndexPath], cellHeights : [IndexPath: CGFloat]) -> [IndexPath: CGFloat] {
 		var finalCellHeights = cellHeights
 		for indexPath in indexPaths {
-			guard let tableCell = view.cellForRowAtIndexPath(indexPath) else {
+			guard let tableCell = view.cellForRow(at: indexPath as IndexPath) else {
 				continue
 			}
 			
@@ -183,8 +185,8 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 				continue
 			}
 
-			if let item = ListType.itemAt(newList, indexPath: indexPath) {
-				cell.fill(item)
+			if let item = ListType.itemAt(list: newList, indexPath: indexPath) {
+				cell.fill(value: item)
 			}
 
 			finalCellHeights[indexPath] = nil
@@ -193,37 +195,37 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 		return finalCellHeights
 	}
 	
-	public static func updateIndexPathsWithFillAndReload(newList: ListType, view : UITableView, indexPaths: [NSIndexPath], cellHeights : [NSIndexPath: CGFloat]) -> [NSIndexPath: CGFloat] {
-		let (editingPaths, nonEditingPaths) = self.editingIndexPaths(newList, view: view, indexPaths: indexPaths)
+	public static func updateIndexPathsWithFillAndReload(newList: ListType, view : UITableView, indexPaths: [IndexPath], cellHeights : [IndexPath: CGFloat]) -> [IndexPath: CGFloat] {
+		let (editingPaths, nonEditingPaths) = self.editingIndexPaths(newList: newList, view: view, indexPaths: indexPaths)
 		for (indexPath, cell) in editingPaths {
 			if let cell = cell as? Fillable {
-				if let item = ListType.itemAt(newList, indexPath: indexPath) {
-					cell.fill(item)
+				if let item = ListType.itemAt(list: newList, indexPath: indexPath) {
+					cell.fill(value: item)
 				}
 			}
 		}
 
-		view.reloadRowsAtIndexPaths(nonEditingPaths, withRowAnimation: .None)
+		view.reloadRows(at: nonEditingPaths, with: .none)
 		
 		return cellHeights
 	}
 
 	
-	public static func editingIndexPaths(newList: ListType,view : UITableView, indexPaths: [NSIndexPath]) -> (editing: [(NSIndexPath,UITableViewCell?)], nonEditing: [NSIndexPath]) {
+	public static func editingIndexPaths(newList: ListType,view : UITableView, indexPaths: [IndexPath]) -> (editing: [(IndexPath,UITableViewCell?)], nonEditing: [IndexPath]) {
 	
 		let editingPaths = indexPaths.map {
-							indexPath -> (NSIndexPath, UITableViewCell?) in
-							let cell = view.cellForRowAtIndexPath(indexPath)
+							indexPath -> (IndexPath, UITableViewCell?) in
+							let cell = view.cellForRow(at: indexPath)
 							return (indexPath,cell)
 						}.filter {
 							(indexPath, cell) in
-							return cell?.editing ?? false
+							return cell?.isEditing ?? false
 						}
 						
 		let nonEditingPaths = indexPaths.filter {
 			indexPath in
-			let cell = view.cellForRowAtIndexPath(indexPath)
-			return !(cell?.editing ?? false)
+			let cell = view.cellForRow(at: indexPath)
+			return !(cell?.isEditing ?? false)
 		}
 
 		return (editing: editingPaths, nonEditing: nonEditingPaths)
@@ -232,11 +234,11 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	static func scrollPositionWithPosition(position: ListScrollPosition) -> UITableViewScrollPosition {
 		switch (position) {
 		case (.Begin):
-			return .Top
+			return .top
 		case (.Middle):
-			return .Middle
+			return .middle
 		case (.End):
-			return .Bottom
+			return .bottom
 		}
 	}
 	
@@ -245,14 +247,14 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 		guard let list = list else { return }
 		guard let tableView = tableView else { return }
 		
-		let allReusableIds = List.allReusableIds(list)
+		let allReusableIds = List.allReusableIds(list: list)
 		for reusableId in allReusableIds {
-			tableView.registerClass(TableViewCell<T>.self, forCellReuseIdentifier: reusableId)
+			tableView.register(TableViewCell<T>.self, forCellReuseIdentifier: reusableId)
 		}
 	}
 	
 	// MARK: Pull to Refresh
-	func refresh(sender: AnyObject?) {
+	@objc func refresh(sender: AnyObject?) {
 		guard let list = self.list else { return }
 		guard let configuration = list.configuration else { return }
 		
@@ -260,11 +262,11 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	}
 	
 	// MARK: UITableViewDataSource
-	public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	public func numberOfSections(in tableView: UITableView) -> Int {
 		return list?.sections.count ?? 0
 	}
 	
-	public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		guard let list = self.list else {
 			return 0
 		}
@@ -272,26 +274,26 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 		return list.sections[section].items.count
 	}
 	
-	public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let list = self.list else {
 			fatalError("List is required. We shouldn't be here")
 		}
 
-		guard let listItem = ListType.itemAt(list, indexPath: indexPath) else {
+		guard let listItem = ListType.itemAt(list: list, indexPath: indexPath) else {
 			fatalError("Index out of bounds. This shouldn't happen")
 		}
 		
 		let reusableId = listItem.reusableId ?? listItem.nibName
-		let cell = tableView.dequeueReusableCellWithIdentifier(reusableId, forIndexPath: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: reusableId, for: indexPath)
 		
-		self.configureCell(cell, listItem: listItem, indexPath: indexPath)
+		self.configureCell(cell: cell, listItem: listItem, indexPath: indexPath)
 		
 		return cell
 	}
 	
-	public func configureCell(cell: UITableViewCell,listItem: ListItemType, indexPath : NSIndexPath) {
+	public func configureCell(cell: UITableViewCell,listItem: ListItemType, indexPath : IndexPath) {
 		if let fillableCell = cell as? Fillable {
-			fillableCell.fill(listItem)
+			fillableCell.fill(value: listItem)
 		}
 		
 		if let configuration = listItem.configuration as? TableListItemConfiguration<T> {
@@ -306,70 +308,70 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 		}
 	}
 	
-	public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		guard let list = self.list else { return nil }
-		guard ListType.sectionInsideBounds(list, section: section) else { return nil }
+		guard ListType.sectionInsideBounds(list: list, section: section) else { return nil }
 		
-		return list.sections[section].header?.createView(self)
+		return list.sections[section].header?.createView(owner: self)
 	}
 	
-	public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+	public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 		guard let list = self.list else { return nil }
-		guard ListType.sectionInsideBounds(list, section: section) else { return nil }
+		guard ListType.sectionInsideBounds(list: list, section: section) else { return nil }
 
-		return list.sections[section].footer?.createView(self)
+		return list.sections[section].footer?.createView(owner: self)
 	}
 	
 	// MARK: UITableViewDelegate
-	public func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
 		if let tableConfiguration = self.list?.configuration as? TableListConfiguration, fixedHeight = tableConfiguration.fixedRowHeight {
 			return fixedHeight
 		}
 		return self.estimatedHeights[indexPath] ?? tableView.estimatedRowHeight
 	}
 	
-	public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if let tableConfiguration = self.list?.configuration as? TableListConfiguration, fixedHeight = tableConfiguration.fixedRowHeight {
 			return fixedHeight
 		}
 		return self.heights[indexPath] ?? UITableViewAutomaticDimension
 	}
 	
-	public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+	public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		guard let list = self.list else { return 0 }
-		guard ListType.sectionInsideBounds(list, section: section) else { return 0 }
+		guard ListType.sectionInsideBounds(list: list, section: section) else { return 0 }
 
-		guard let footer = list.sections[section].header else { return 0 }
+		guard list.sections[section].header != nil else { return 0 }
 
 		return UITableViewAutomaticDimension
 	}
 	
-	public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+	public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 		guard let list = self.list else { return 0 }
-		guard ListType.sectionInsideBounds(list, section: section) else { return 0 }
+		guard ListType.sectionInsideBounds(list: list, section: section) else { return 0 }
 
-		guard let footer = list.sections[section].footer else { return 0 }
+		guard list.sections[section].footer != nil else { return 0 }
 
 		return UITableViewAutomaticDimension
 	}
 	
-	public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+	public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		self.estimatedHeights[indexPath] = cell.frame.size.height
 		self.heights[indexPath] = cell.frame.size.height
 	}
 	
 	@available(iOS 9.0, *)
-	public func tableView(tableView: UITableView, didUpdateFocusInContext context: UITableViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+	public func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
 		guard let list = self.list else { return }
 		guard let indexPath = context.nextFocusedIndexPath else { return }
 		
-		let listItem = ListType.itemAt(list, indexPath: indexPath)
+		let listItem = ListType.itemAt(list: list, indexPath: indexPath)
 		_ = listItem.map { $0.onFocus?($0) }
 	}
 	
-	public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		// TODO: Move this to a different place
-		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+		tableView.deselectRow(at: indexPath, animated: true)
 		
 		guard let list = self.list else {
 			return
@@ -382,12 +384,12 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	}
 
 	
-	public func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+	public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		guard let list = self.list else {
 			return
 		}
 		
-		let listItem = ListType.itemAt(list, indexPath: indexPath)
+		let listItem = ListType.itemAt(list: list, indexPath: indexPath)
 		if let configuration = listItem?.configuration as? TableListItemConfiguration<T>,
 			let onAccessoryTap = configuration.onAccessoryTap {
 			if let listItem = listItem {
@@ -396,12 +398,12 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 		}
 	}
 	
-	public func scrollViewDidScroll(scrollView: UIScrollView) {
+	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		self.viewDidScroll?()
 	}
 	
 	#if os(iOS)
-	public func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+	public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 		guard let list = self.list else {
 			return []
 		}
@@ -418,12 +420,12 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 		
 		return listItem.swipeActions.map {
 			action in
-			return TableViewDataSource.rowAction(tableView,item: listItem, action: action)
+			return TableViewDataSource.rowAction(tableView: tableView,item: listItem, action: action)
 		}
 	}
 	
 	static func rowAction(tableView: UITableView, item: ListItemType, action: ListItemAction<T>) -> UITableViewRowAction {
-		let rowAction = UITableViewRowAction(style: self.rowStyle(action.style), title: action.title) { _,_ in
+		let rowAction = UITableViewRowAction(style: self.rowStyle(style: action.style), title: action.title) { _,_ in
 			action.action(item)
 			tableView.setEditing(false, animated: true)
 		}
@@ -434,9 +436,9 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	static func rowStyle(style : ListItemActionStyle) -> UITableViewRowActionStyle {
 		switch style {
 		case .Default:
-			return .Default
+			return .default
 		case .Normal:
-			return .Normal
+			return .normal
 		}
 	}
 	#endif

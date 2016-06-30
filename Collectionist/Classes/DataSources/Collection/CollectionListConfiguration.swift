@@ -12,7 +12,7 @@ public struct CollectionListConfiguration<T: Equatable>: ListConfiguration, Equa
 	// MARK: Pull To Refresh
 	public var onRefresh: (() -> ())?
 	public var lastUpdated: NSDate?
-	public var minimumRefreshInterval: NSTimeInterval?
+	public var minimumRefreshInterval: TimeInterval?
 	
 	// MARK: Infinite Scrolling
 	public var onLoadMore: (() -> ())?
@@ -22,7 +22,7 @@ public struct CollectionListConfiguration<T: Equatable>: ListConfiguration, Equa
 	
 	public init(onRefresh : (() -> ())? = nil,
 				lastUpdated: NSDate? = nil,
-				minimumRefreshInterval: NSTimeInterval? = nil,
+				minimumRefreshInterval: TimeInterval? = nil,
 				onLoadMore : (() -> ())? = nil,
 				loadMoreEnabled : Bool = false)
 	{
