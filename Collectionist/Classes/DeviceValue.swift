@@ -19,7 +19,7 @@ public struct DeviceValue<T> {
 	public var iPhoneLandscape: T?
 	public var iPadLandscape: T?
 	
-	public func value(orientation: UIDeviceOrientation) -> T {
+	public func value(_ orientation: UIDeviceOrientation) -> T {
 		let idiom = UIDevice.current().userInterfaceIdiom
 		switch (idiom, orientation.isPortrait, orientation.isLandscape) {
 			case (.pad, true, false):

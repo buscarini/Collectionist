@@ -19,7 +19,7 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 		super.init(style: .default, reuseIdentifier: reuseId)
 	}
 	
-	public func fill(value: Any?) {
+	public func fill(_ value: Any?) {
 		guard let listItem = value as? ListItem<T> else {
 			return
 		}
@@ -33,7 +33,7 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 			subview = view
 		}
 		else {
-			subview = viewFor(nibName: listItem.nibName)
+			subview = viewFor(listItem.nibName)
 			if let subview = subview {
 				view?.removeFromSuperview()
 				view = subview
@@ -44,13 +44,13 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 		}
 		
 		if let fillable = subview as? Fillable {
-			fillable.fill(value: listItem.value)
+			fillable.fill(listItem.value)
 		}
 		
-		self.update(config: listItem.configuration as? TableListItemConfiguration<T>)
+		self.update(listItem.configuration as? TableListItemConfiguration<T>)
 	}
 	
-	func update(config: TableListItemConfiguration<T>?) {
+	func update(_ config: TableListItemConfiguration<T>?) {
 		guard let config = config else { return }
 		self.accessoryType = config.accessoryType
 		self.separatorInset = config.separatorInset ?? UIEdgeInsetsZero
@@ -58,7 +58,7 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 		_ = config.indentationWidth.map { self.indentationWidth = $0 }
 	}
 	
-	func viewFor(nibName : String?) -> UIView? {
+	func viewFor(_ nibName : String?) -> UIView? {
 		guard let nibName = nibName else {
 			return nil
 		}

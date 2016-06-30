@@ -11,7 +11,7 @@ import Foundation
 public protocol ListConfiguration {
 	// MARK: Pull To Refresh
 	var onRefresh : (() -> ())? { get set }
-	var lastUpdated: NSDate? { get set }
+	var lastUpdated: Date? { get set }
 	var minimumRefreshInterval: TimeInterval? { get set }
 	
 	// MARK: Infinite Scrolling

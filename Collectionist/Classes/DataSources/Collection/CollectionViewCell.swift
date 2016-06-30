@@ -1,9 +1,9 @@
 //
 //  CollectionViewCell.swift
-//  cibo
+//  Collectionist
 //
 //  Created by Jose Manuel Sánchez Peñarroja on 15/10/15.
-//  Copyright © 2015 treenovum. All rights reserved.
+//  Copyright © 2015 vitaminew. All rights reserved.
 //
 
 import UIKit
@@ -14,7 +14,7 @@ public class CollectionViewCell<T : Equatable>: UICollectionViewCell, Fillable {
 	var view : UIView?
 	var nibName : String?
 	
-	public func fill(value: Any?) {
+	public func fill(_ value: Any?) {
 		guard let listItem = value as? ListItem<T> else {
 			return
 		}
@@ -25,7 +25,7 @@ public class CollectionViewCell<T : Equatable>: UICollectionViewCell, Fillable {
 			subview = view
 		}
 		else {
-			subview = viewFor(nibName: listItem.nibName)
+			subview = viewFor(listItem.nibName)
 			if let subview = subview {
 				view?.removeFromSuperview()
 				view = subview
@@ -36,13 +36,13 @@ public class CollectionViewCell<T : Equatable>: UICollectionViewCell, Fillable {
 		}
 		
 		if let fillable = subview as? Fillable {
-			fillable.fill(value: listItem.value)
+			fillable.fill(listItem.value)
 		}
 		
 		self.nibName = listItem.nibName
 	}
 	
-	func viewFor(nibName : String?) -> UIView? {
+	func viewFor(_ nibName : String?) -> UIView? {
 		guard let nibName = nibName else {
 			return nil
 		}

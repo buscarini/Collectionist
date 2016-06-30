@@ -15,7 +15,7 @@ public extension List {
 	typealias ListType = List<T, HeaderT, FooterT>
 
 	public static func listFrom<T: Equatable>(
-												items: [T],
+												_ items: [T],
 												nibName: String,
 												configuration: ListConfiguration? = nil,
 												scrollInfo: ListScrollInfo? = nil,
@@ -46,11 +46,11 @@ public extension List {
 //		return List<T>(sections: [section], scrollInfo: scrollInfo, configuration: configuration)
 //	}
 	
-	public static func isEmpty<T: Equatable>(list: List<T,HeaderT,FooterT>) -> Bool {
+	public static func isEmpty<T: Equatable>(_ list: List<T,HeaderT,FooterT>) -> Bool {
 		return list.sections.map { $0.items.count }.reduce(0, combine: +)==0
 	}
 	
-	public static func itemIndexPath(list: ListType, item: T) -> IndexPath? {
+	public static func itemIndexPath(_ list: ListType, item: T) -> IndexPath? {
 		for (sectionIndex, section) in list.sections.enumerated() {
 			for (itemIndex, listItem) in section.items.enumerated() {
 				if listItem.value == item {
@@ -62,7 +62,7 @@ public extension List {
 		return nil
 	}
 	
-	public static func itemAt<T: Equatable>(list: List<T,HeaderT,FooterT>, indexPath: IndexPath) -> ListItem<T>? {
+	public static func itemAt<T: Equatable>(_ list: List<T,HeaderT,FooterT>, indexPath: IndexPath) -> ListItem<T>? {
 		guard List<T,HeaderT,FooterT>.indexPathInsideBounds(list, indexPath: indexPath) else { return nil }
 		return list.sections[indexPath.section].items[indexPath.row]
 	}
@@ -81,7 +81,7 @@ public extension List {
 		}
 	}
 	
-	public static func sectionInsideBounds(list: List,section : Int) -> Bool {
+	public static func sectionInsideBounds(_ list: List,section : Int) -> Bool {
 		return list.sections.count>section && section>=0
 	}
 	
@@ -117,12 +117,12 @@ public extension List {
 			}.flatMap{$0} // Flatten [[IndexPath]]
 	}
 	
-	public static func compareItems<T>(item1: ListItem<T>,item2: ListItem<T>) -> ListItem<T>? {
+	public static func compareItems<T>(_ item1: ListItem<T>,item2: ListItem<T>) -> ListItem<T>? {
 		return item1 == item2 ? nil : item2
 	}
 	
-	public static func allReusableIds(list: List) -> [String] {
-		return removingDuplicates(source: list.sections.flatMap {
+	public static func allReusableIds(_ list: List) -> [String] {
+		return removingDuplicates(list.sections.flatMap {
 			section in
 			return section.items.map {
 				$0.cellId

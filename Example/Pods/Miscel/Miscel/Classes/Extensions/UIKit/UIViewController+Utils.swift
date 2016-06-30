@@ -12,12 +12,11 @@ import Layitout
 
 extension UIViewController {
 	public func embed(_ child: UIViewController, inView: UIView) -> UIViewController {
-		self.embed(child) {
+		return self.embed(child) {
 			child.view.translatesAutoresizingMaskIntoConstraints = false
 			inView.addSubview(child.view)
 			Layout.fill(container: inView, view: child.view)
 		}
-		return child
 	}
 
 	public func embed(_ child: UIViewController, addSubview: ()->()) -> UIViewController {

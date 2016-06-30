@@ -30,6 +30,6 @@ public extension Dictionary where Value: OptionalType {
 				dic.removeValue(forKey: key)
 			}
 		}
-		return dic as! Dictionary<Key,Value.T>
+		return dic
 	}
 }

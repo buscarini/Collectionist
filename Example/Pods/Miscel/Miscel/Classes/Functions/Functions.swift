@@ -15,6 +15,6 @@ public func with<T>(constant: T, update: @noescape(inout T) throws ->() ) rethro
 }
 
 public func delay(time: TimeInterval, closure: () -> ()) {
-	var dispatchTime: DispatchTime = DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+	let dispatchTime: DispatchTime = DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 	DispatchQueue.main.after(when: dispatchTime, execute: closure)
 }

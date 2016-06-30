@@ -11,11 +11,11 @@ import UIKit
 import Miscel
 
 public extension ListHeaderFooter {
-	public func createView(owner: NSObject) -> UIView? {
+	public func createView(_ owner: NSObject) -> UIView? {
 		let view = Bundle.loadView(nibName: self.nibName, owner: owner)
 		
 		if let fillable = view as? Fillable {
-			fillable.fill(value: self.value)
+			fillable.fill(self.value)
 		}
 		
 		return view

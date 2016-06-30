@@ -9,15 +9,15 @@
 import Foundation
 
 public enum ListItemActionStyle : Equatable {
-	case Default
-	case Normal
+	case `default`
+	case normal
 }
 
 public func ==(lhs : ListItemActionStyle, rhs: ListItemActionStyle) -> Bool {
 	switch (lhs,rhs) {
-		case (.Default, .Default):
+		case (.default, .default):
 			return true
-		case (.Normal, .Normal):
+		case (.normal, .normal):
 			return true
 		default:
 		return false			
