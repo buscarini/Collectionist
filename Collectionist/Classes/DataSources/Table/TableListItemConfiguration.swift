@@ -16,7 +16,7 @@ public struct TableListItemConfiguration<T: Equatable> : ListItemConfiguration, 
 	public var indentationWidth : CGFloat?
 	public var separatorInset: UIEdgeInsets?
 	
-	public init(accessoryType: UITableViewCellAccessoryType = .None,
+	public init(accessoryType: UITableViewCellAccessoryType = .none,
 				onAccessoryTap: ((ListItem<T>)->())? = nil,
 				swipeActions : [ListItemAction<T>] = [],
 				indentationLevel: Int? = nil,
@@ -32,7 +32,7 @@ public struct TableListItemConfiguration<T: Equatable> : ListItemConfiguration, 
 	
 	public static func defaultConfiguration() -> TableListItemConfiguration {
 		return TableListItemConfiguration(
-			accessoryType : .None,
+			accessoryType : .none,
 			onAccessoryTap: nil,
 			swipeActions: [],
 			indentationLevel: 0,

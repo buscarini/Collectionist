@@ -28,7 +28,12 @@ class ViewController: UIViewController {
     }
 
 	func updateList() {
-		self.dataSource?.list = Collectionist.List<Model>.listFrom(self.models, nibName : "ModelView")
+	
+		let tableConfiguration = TableListConfiguration(onRefresh: {
+			self.updateList()
+		})
+	
+		self.dataSource?.list = Collectionist.List<Model>.listFrom(self.models, nibName : "ModelView", configuration: tableConfiguration)
 	}
 
 }

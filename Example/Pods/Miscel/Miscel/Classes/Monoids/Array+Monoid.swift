@@ -13,7 +13,7 @@ extension Array: Monoid {
 		return Array()
 	}
 	
-	public static func combine(left: Array, _ right: Array) -> Array {
+	public static func combine(_ left: Array, _ right: Array) -> Array {
 		return left + right
 	}
 }

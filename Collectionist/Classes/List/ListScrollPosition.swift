@@ -9,18 +9,18 @@
 import Foundation
 
 public enum ListScrollPosition : Equatable {
-	case Begin
-	case Middle
-	case End
+	case begin
+	case middle
+	case end
 }
 
 public func ==(lhs : ListScrollPosition, rhs: ListScrollPosition) -> Bool {
 	switch (lhs, rhs) {
-		case (.Begin, .Begin):
+		case (.begin, .begin):
 			return true
-		case (.Middle, .Middle):
+		case (.middle, .middle):
 			return true
-		case (.End, .End):
+		case (.end, .end):
 			return true
 
 		default:

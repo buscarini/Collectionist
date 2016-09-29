@@ -18,7 +18,7 @@ class ModelView: UIView {
 }
 
 extension ModelView: Fillable {
-	func fill(item: Any?) {
+	func fill(_ item: Any?) {
 		guard let model = item as? Model else { return }
 		
 		self.nameLabel?.text = model.name

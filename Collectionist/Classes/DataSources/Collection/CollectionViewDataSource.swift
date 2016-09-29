@@ -1,9 +1,9 @@
 //
 //  CollectionViewDataSource.swift
-//  cibo
+//  Collectionist
 //
 //  Created by Jose Manuel Sánchez Peñarroja on 15/10/15.
-//  Copyright © 2015 treenovum. All rights reserved.
+//  Copyright © 2015 vitaminew. All rights reserved.
 //
 
 import UIKit
@@ -23,7 +23,7 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 
 		super.init()
 		
-		self.refreshControl?.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
+		self.refreshControl?.addTarget(self, action: "refresh:", for: .valueChanged)
 
 		self.viewChanged()
 	}
@@ -48,7 +48,7 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 		self.view.delegate = self			
 	}
 	
-	private func update(oldList: ListType?, newList: ListType?) {
+	private func update(_ oldList: ListType?, newList: ListType?) {
 		self.updateView(oldList, newList: newList)
 		
 		self.refreshControl?.endRefreshing()
@@ -61,18 +61,37 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 		}
 
 		if let list = newList, let scrollInfo = self.list?.scrollInfo, let indexPath = scrollInfo.indexPath where ListType.indexPathInsideBounds(list, indexPath: indexPath) {
-			self.view.scrollToItemAtIndexPath(indexPath, atScrollPosition:  CollectionViewDataSource.scrollPositionWithPosition(scrollInfo.position, collectionView: self.view), animated: scrollInfo.animated)
+		
+			self.view.scrollToItem(at: indexPath, at: CollectionViewDataSource.scrollPositionWithPosition(scrollInfo.position, collectionView: self.view), animated: scrollInfo.animated)
 		}
 	}
 	
-	private func updateView(oldList: ListType?, newList: ListType?) {
-		if	let oldList = oldList, let newList = newList where ListType.sameItemsCount(oldList,list2: newList) {
+	private func updateView(_ oldList: ListType?, newList: ListType?) {
+		if	let oldList = oldList, let newList = newList where ListType.sameItemsCount(oldList, newList) {
 			
 			let visibleIndexPaths = view.indexPathsForVisibleItems()
 			
+//			let listItems: [ListItem<T>?] = visibleIndexPaths.map { indexPath -> ListItem<T>? in
+//				guard let item = indexPath.item else { return nil }
+//				return newList.sections[indexPath.section].items[item]
+//			}
+//			
+//			let cells = visibleIndexPaths.map {
+//				return view.cellForItem(at: $0)
+//			}
+//			
+//			Zip2Sequence(_sequence1: listItems, _sequence2: cells).map { listItem, cell in
+//				if let fillableCell = cell as? Fillable, let listItem = listItem {
+//					fillableCell.fill(listItem)
+//				}
+//				return nil
+//			}
+			
 			for indexPath in visibleIndexPaths {
-				let cell = view.cellForItemAtIndexPath(indexPath)
-				let listItem = newList.sections[indexPath.section].items[indexPath.item]
+				guard let item = indexPath.item else { continue }
+			
+				let cell = view.cellForItem(at: indexPath)
+				let listItem = newList.sections[indexPath.section].items[item]
 				if let fillableCell = cell as? Fillable {
 					fillableCell.fill(listItem)
 				}
@@ -83,9 +102,9 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 		}
 	}
 	
-	static func scrollPositionWithPosition(position: ListScrollPosition, collectionView: UICollectionView?) -> UICollectionViewScrollPosition {
+	static func scrollPositionWithPosition(_ position: ListScrollPosition, collectionView: UICollectionView?) -> UICollectionViewScrollPosition {
 		guard let collectionView = collectionView else {
-			return .None
+			return []
 		}
 		
 		let scrollDirection : UICollectionViewScrollDirection
@@ -93,36 +112,36 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 			scrollDirection = flowLayout.scrollDirection
 		}
 		else {
-			scrollDirection = .Vertical
+			scrollDirection = .vertical
 		}
 		
 		switch (position,scrollDirection) {
-			case (.Begin,.Horizontal):
-				return .Left
-			case (.Begin,.Vertical):
-				return .Top
-			case (.Middle,.Vertical):
-				return .CenteredVertically
-			case (.Middle,.Horizontal):
-				return .CenteredHorizontally
-			case (.End, .Vertical):
-				return .Bottom
-			case (.End, .Horizontal):
-					return .Right
+			case (.begin,.horizontal):
+				return .left
+			case (.begin,.vertical):
+				return .top
+			case (.middle,.vertical):
+				return .centeredVertically
+			case (.middle,.horizontal):
+				return .centeredHorizontally
+			case (.end, .vertical):
+				return .bottom
+			case (.end, .horizontal):
+					return .right
 		}
 	}
 	
-	public static func registerViews(list: ListType?, collectionView : UICollectionView?) {
+	public static func registerViews(_ list: ListType?, collectionView : UICollectionView?) {
 		guard let list = list else { return }
 		
 		let allReusableIds = List.allReusableIds(list)
 		for reusableId in allReusableIds {
-			collectionView?.registerClass(CollectionViewCell<T>.self, forCellWithReuseIdentifier: reusableId)
+			collectionView?.register(CollectionViewCell<T>.self, forCellWithReuseIdentifier: reusableId)
 		}
 	}
 	
 	// MARK: Pull to Refresh
-	func refresh(sender: AnyObject?) {
+	func refresh(_ sender: AnyObject?) {
 		guard let list = self.list else { return }
 		guard let configuration = list.configuration else { return }
 		
@@ -130,11 +149,11 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 	}
 	
 	// MARK: UICollectionViewDataSource
-	public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+	public func numberOfSections(in collectionView: UICollectionView) -> Int {
 		return self.list?.sections.count ?? 0
 	}
 	
-	public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		guard let list = self.list else {
 			return 0
 		}
@@ -142,13 +161,13 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 		return list.sections[section].items.count
 	}
 
-	public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+	public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		guard let list = self.list else {
 			fatalError("List is required. We shouldn't be here")
 		}
 		
 		let listItem = list.sections[indexPath.section].items[indexPath.row]
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(listItem.cellId, forIndexPath: indexPath)
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listItem.cellId, for: indexPath)
 		
 		if let fillableCell = cell as? Fillable {
 			fillableCell.fill(listItem)
@@ -157,12 +176,12 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 		return cell
 	}
 	
-	public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+	public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		guard let list = self.list else {
 			return
 		}
 
-		let listItem = list.sections[indexPath.section].items[indexPath.row]
+		let listItem = list.sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row]
 		
 		if let fillableCell = cell as? Fillable {
 			fillableCell.fill(listItem)
@@ -170,12 +189,12 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 	}
 	
 	// MARK : UICollectionViewDelegate
-	public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+	public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		guard let list = self.list else {
 			return
 		}
 		
-		let listItem = list.sections[indexPath.section].items[indexPath.row]
+		let listItem = list.sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row]
 		if let onSelect = listItem.onSelect {
 			onSelect(listItem)
 		}

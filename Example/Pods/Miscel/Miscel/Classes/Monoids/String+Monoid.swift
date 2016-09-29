@@ -13,7 +13,7 @@ extension String: Monoid {
 		return ""
 	}
 	
-	public static func combine(left: String, _ right: String) -> String {
+	public static func combine(_ left: String, _ right: String) -> String {
 		return left + right
 	}
 }

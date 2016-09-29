@@ -15,7 +15,7 @@ public extension List {
 	typealias ListType = List<T, HeaderT, FooterT>
 
 	public static func listFrom<T: Equatable>(
-												items: [T],
+												_ items: [T],
 												nibName: String,
 												configuration: ListConfiguration? = nil,
 												scrollInfo: ListScrollInfo? = nil,
@@ -46,15 +46,15 @@ public extension List {
 //		return List<T>(sections: [section], scrollInfo: scrollInfo, configuration: configuration)
 //	}
 	
-	public static func isEmpty<T: Equatable>(list: List<T,HeaderT,FooterT>) -> Bool {
+	public static func isEmpty<T: Equatable>(_ list: List<T,HeaderT,FooterT>) -> Bool {
 		return list.sections.map { $0.items.count }.reduce(0, combine: +)==0
 	}
 	
-	public static func itemIndexPath(list: ListType, item: T) -> NSIndexPath? {
-		for (sectionIndex, section) in list.sections.enumerate() {
-			for (itemIndex, listItem) in section.items.enumerate() {
+	public static func itemIndexPath(_ list: ListType, item: T) -> IndexPath? {
+		for (sectionIndex, section) in list.sections.enumerated() {
+			for (itemIndex, listItem) in section.items.enumerated() {
 				if listItem.value == item {
-					return NSIndexPath(forRow: itemIndex, inSection: sectionIndex)
+					return IndexPath(row: itemIndex, section: sectionIndex)
 				}
 			}
 		}
@@ -62,13 +62,13 @@ public extension List {
 		return nil
 	}
 	
-	public static func itemAt<T: Equatable>(list: List<T,HeaderT,FooterT>, indexPath: NSIndexPath) -> ListItem<T>? {
+	public static func itemAt<T: Equatable>(_ list: List<T,HeaderT,FooterT>, indexPath: IndexPath) -> ListItem<T>? {
 		guard List<T,HeaderT,FooterT>.indexPathInsideBounds(list, indexPath: indexPath) else { return nil }
 		return list.sections[indexPath.section].items[indexPath.row]
 	}
 	
 	
-	public static func indexPathInsideBounds(list: List,indexPath : NSIndexPath) -> Bool {
+	public static func indexPathInsideBounds(_ list: List,indexPath: IndexPath) -> Bool {
 		switch (indexPath.section,indexPath.row) {
 		case (let section, _) where section>=list.sections.count:
 			return false
@@ -81,47 +81,47 @@ public extension List {
 		}
 	}
 	
-	public static func sectionInsideBounds(list: List,section : Int) -> Bool {
+	public static func sectionInsideBounds(_ list: List,section : Int) -> Bool {
 		return list.sections.count>section && section>=0
 	}
 	
-	public static func sameItemsCount<T : Equatable, HeaderT : Equatable, FooterT: Equatable>(list1: List<T,HeaderT,FooterT>, list2: List<T,HeaderT,FooterT>) -> Bool {
+	public static func sameItemsCount<T : Equatable, HeaderT : Equatable, FooterT: Equatable>(_ list1: List<T,HeaderT,FooterT>, _ list2: List<T,HeaderT,FooterT>) -> Bool {
 		guard (list1.sections.count == list2.sections.count) else { return false }
 		
-		return Zip2Sequence(list1.sections,list2.sections).filter {
+		return Zip2Sequence(_sequence1: list1.sections,_sequence2: list2.sections).filter {
 			(section1, section2) in
 			return section1.items.count != section2.items.count
 			}.count==0
 	}
 	
-	public static func itemsChangedPaths<T : Equatable, HeaderT : Equatable, FooterT: Equatable>(list1: List<T,HeaderT,FooterT>, list2: List<T,HeaderT,FooterT>) -> [NSIndexPath] {
-		assert(sameItemsCount(list1, list2: list2))
+	public static func itemsChangedPaths<T : Equatable, HeaderT : Equatable, FooterT: Equatable>(_ list1: List<T,HeaderT,FooterT>, _ list2: List<T,HeaderT,FooterT>) -> [IndexPath] {
+		assert(sameItemsCount(list1, list2))
 		
-		let processed = Zip2Sequence(list1.sections,list2.sections).map {
+		let processed = Zip2Sequence(_sequence1: list1.sections,_sequence2: list2.sections).map {
 			(section1, section2) in
-			return Zip2Sequence(section1.items,section2.items).map(compareItems)
+			return Zip2Sequence(_sequence1: section1.items,_sequence2: section2.items).map(compareItems)
 		}
 		
-		return Zip2Sequence(processed,Array(0..<processed.count)).map {
-			(items, sectionIndex) -> [NSIndexPath] in
+		return Zip2Sequence(_sequence1: processed,_sequence2: Array(0..<processed.count)).map {
+			(items, sectionIndex) -> [IndexPath] in
 			let numItems = items.count
-			let indexes = Zip2Sequence(items,Array(0..<numItems))
+			let indexes = Zip2Sequence(_sequence1: items,_sequence2: Array(0..<numItems))
 				.map { // Convert non nil items to their indexes
 					(item, index) in
 					item.map { _ in index }
 				}
 				.flatMap{$0} // Removed nil items
 			
-			return indexes.map { NSIndexPath(forRow: $0, inSection: sectionIndex) } // Convert indexes to nsindexpath
+			return indexes.map { IndexPath(row: $0, section: sectionIndex) } // Convert indexes to indexPath
 			
-			}.flatMap{$0} // Flatten [[NSIndexPath]]
+			}.flatMap{$0} // Flatten [[IndexPath]]
 	}
 	
-	public static func compareItems<T>(item1: ListItem<T>,item2: ListItem<T>) -> ListItem<T>? {
+	public static func compareItems<T>(_ item1: ListItem<T>,item2: ListItem<T>) -> ListItem<T>? {
 		return item1 == item2 ? nil : item2
 	}
 	
-	public static func allReusableIds(list: List) -> [String] {
+	public static func allReusableIds(_ list: List) -> [String] {
 		return removingDuplicates(list.sections.flatMap {
 			section in
 			return section.items.map {

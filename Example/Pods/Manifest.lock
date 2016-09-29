@@ -8,25 +8,25 @@ PODS:
 
 DEPENDENCIES:
   - Collectionist (from `../`)
-  - Layitout (from `https://github.com/buscarini/layitout.git`, branch `master`)
-  - Miscel (from `https://github.com/buscarini/miscel.git`, branch `master`)
+  - Layitout (from `https://github.com/buscarini/layitout.git`, branch `feature/Swift3`)
+  - Miscel (from `https://github.com/buscarini/miscel.git`, branch `feature/Swift3`)
 
 EXTERNAL SOURCES:
   Collectionist:
     :path: ../
   Layitout:
-    :branch: master
+    :branch: feature/Swift3
     :git: https://github.com/buscarini/layitout.git
   Miscel:
-    :branch: master
+    :branch: feature/Swift3
     :git: https://github.com/buscarini/miscel.git
 
 CHECKOUT OPTIONS:
   Layitout:
-    :commit: e5bd5955149e8e7008b2aa1b57c4d77ff74cc20a
+    :commit: dda793a4c44547d33e9e8f4df2fb63c8ffa66bbc
     :git: https://github.com/buscarini/layitout.git
   Miscel:
-    :commit: 51ece09e6255c106a285130346ad9008e79a4f21
+    :commit: 300299979deb0e8761dd4c975b6a05b6cd02f277
     :git: https://github.com/buscarini/miscel.git
 
 SPEC CHECKSUMS:
@@ -34,6 +34,6 @@ SPEC CHECKSUMS:
   Layitout: 8ab04d3f4d09b945fca1a55902b2a993376056b8
   Miscel: 05fe6271486c0acdf9077bfa9cddf6811c0427b7
 
-PODFILE CHECKSUM: 69c98060a1b062046aef0349696161320acaf795
+PODFILE CHECKSUM: 2ea2c438c0d21243182427b3352d8fd6da6aec24
 
 COCOAPODS: 1.0.0

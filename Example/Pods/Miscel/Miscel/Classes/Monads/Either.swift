@@ -11,6 +11,15 @@ import Foundation
 public enum Either<T, ErrorT> {
 	case Left(ErrorT)
 	case Right(T)
+	
+	public init(maybe: T?, error: ErrorT) {
+		if let value = maybe {
+			self = .Right(value)
+		}
+		else {
+			self = .Left(error)
+		}
+	}
 }
 
 // MARK: Monad

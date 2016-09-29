@@ -10,9 +10,9 @@ import Foundation
 
 public func ==<T: Equatable>(lhs: [T]?, rhs: [T]?) -> Bool {
     switch (lhs, rhs) {
-    case (.Some(let lhs), .Some(let rhs)):
+    case (.some(let lhs), .some(let rhs)):
         return lhs == rhs
-    case (.None, .None):
+    case (nil, nil):
         return true
     default:
         return false

@@ -16,10 +16,10 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 	var nibName : String?
 	
 	public init(reuseId: String) {
-		super.init(style: .Default, reuseIdentifier: reuseId)
+		super.init(style: .default, reuseIdentifier: reuseId)
 	}
 	
-	public func fill(value: Any?) {
+	public func fill(_ value: Any?) {
 		guard let listItem = value as? ListItem<T> else {
 			return
 		}
@@ -39,7 +39,7 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 				view = subview
 				self.contentView.addSubview(subview)
 				subview.translatesAutoresizingMaskIntoConstraints = false
-				Layout.fill(self.contentView,view: subview)
+				Layout.fill(container: self.contentView,view: subview)
 			}
 		}
 		
@@ -50,7 +50,7 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 		self.update(listItem.configuration as? TableListItemConfiguration<T>)
 	}
 	
-	func update(config: TableListItemConfiguration<T>?) {
+	func update(_ config: TableListItemConfiguration<T>?) {
 		guard let config = config else { return }
 		self.accessoryType = config.accessoryType
 		self.separatorInset = config.separatorInset ?? UIEdgeInsetsZero
@@ -58,15 +58,12 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 		_ = config.indentationWidth.map { self.indentationWidth = $0 }
 	}
 	
-	func viewFor(nibName : String?) -> UIView? {
+	func viewFor(_ nibName : String?) -> UIView? {
 		guard let nibName = nibName else {
 			return nil
 		}
 		
-		if let views = NSBundle.mainBundle().loadNibNamed(nibName, owner: self, options: nil) {
-			return views.first as? UIView
-		}
-		
-		return nil
+		let views = Bundle.main().loadNibNamed(nibName, owner: self, options: nil)
+		return views.first as? UIView
 	}	
 }

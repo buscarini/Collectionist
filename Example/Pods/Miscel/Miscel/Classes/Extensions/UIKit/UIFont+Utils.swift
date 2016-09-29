@@ -13,7 +13,7 @@ public extension UIFont {
         let fontDescriptorFeatureSettings = [[UIFontFeatureTypeIdentifierKey: kNumberSpacingType, UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector]]
         let fontDescriptorAttributes = [UIFontDescriptorFeatureSettingsAttribute: fontDescriptorFeatureSettings]
         let oldFontDescriptor = fontDescriptor()
-        let newFontDescriptor = oldFontDescriptor.fontDescriptorByAddingAttributes(fontDescriptorAttributes)
+        let newFontDescriptor = oldFontDescriptor.addingAttributes(fontDescriptorAttributes)
 
         return UIFont(descriptor: newFontDescriptor, size: 0)
     }

@@ -1,9 +1,9 @@
 //
 //  List.swift
-//  cibo
+//  Collectionist
 //
 //  Created by Jose Manuel Sánchez Peñarroja on 15/10/15.
-//  Copyright © 2015 treenovum. All rights reserved.
+//  Copyright © 2015 vitaminew. All rights reserved.
 //
 
 import UIKit

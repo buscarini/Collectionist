@@ -13,8 +13,8 @@ public struct TableListConfiguration : ListConfiguration, Equatable {
 	
 	// MARK: Pull To Refresh
 	public var onRefresh : (() -> ())?
-	public var lastUpdated: NSDate?
-	public var minimumRefreshInterval: NSTimeInterval?
+	public var lastUpdated: Date?
+	public var minimumRefreshInterval: TimeInterval?
 	
 	// MARK: Infinite Scrolling
 	public var onLoadMore : (() -> ())?
@@ -24,8 +24,8 @@ public struct TableListConfiguration : ListConfiguration, Equatable {
 	
 	public init(fixedRowHeight: CGFloat? = nil,
 				onRefresh : (() -> ())? = nil,
-				lastUpdated: NSDate? = nil,
-				minimumRefreshInterval: NSTimeInterval? = nil,
+				lastUpdated: Date? = nil,
+				minimumRefreshInterval: TimeInterval? = nil,
 				onLoadMore : (() -> ())? = nil,
 				loadMoreEnabled : Bool = false)
 	{

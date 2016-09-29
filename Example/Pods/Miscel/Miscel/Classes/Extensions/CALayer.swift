@@ -9,7 +9,7 @@
 import UIKit
 
 public class NullAction: CAAction {
-	@objc public func runActionForKey(event: String, object anObject: AnyObject, arguments dict: [NSObject : AnyObject]?) {
+	@objc public func run(forKey event: String, object anObject: AnyObject, arguments dict: [NSObject : AnyObject]?) {
 		// Do nothing.
 	}
 }

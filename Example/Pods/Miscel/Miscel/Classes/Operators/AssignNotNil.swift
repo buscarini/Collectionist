@@ -14,7 +14,7 @@ infix operator ?= {
     assignment
 }
 
-public func ?= <T>(inout lhs: T, rhs: T?) {
+public func ?= <T>(lhs: inout T, rhs: T?) {
     lhs = rhs ?? lhs
 }
 

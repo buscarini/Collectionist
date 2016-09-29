@@ -8,10 +8,10 @@
 
 import UIKit
 
-extension NSBundle {
+extension Bundle {
 
 	public static func loadView(nibName: String?, owner: AnyObject) -> UIView? {
-		return NSBundle.mainBundle().loadView(nibName, owner: owner)
+		return Bundle.main().loadView(nibName: nibName, owner: owner)
 	}
 
 	public func loadView(nibName : String?, owner: AnyObject) -> UIView? {
@@ -19,11 +19,8 @@ extension NSBundle {
 			return nil
 		}
 		
-		if let views = NSBundle.mainBundle().loadNibNamed(nibName, owner: owner, options: nil) {
-			return views.first as? UIView
-		}
-		
-		return nil
+		let views = Bundle.main().loadNibNamed(nibName, owner: owner, options: nil)
+		return views.first as? UIView
 	}
 }
 

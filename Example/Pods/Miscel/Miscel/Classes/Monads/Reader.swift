@@ -27,16 +27,15 @@ public struct Reader<Env,A> {
 	
 	public func flatMap<B>(f: (A) -> Reader<Env,B>) -> Reader<Env,B> {
 		return Reader<Env,B> { config in
-			return f(self.run(config)).run(config)
+			return f(self.run(config: config)).run(config: config)
 		}
 	}
 	
 	public func map<B>(f: (A) -> (B)) -> Reader<Env,B> {
 		return Reader<Env,B> { config in
-			return f(self.run(config))
+			return f(self.run(config: config))
 		}
 	}
-	
 	
 	public static func ask() -> Reader<Env,Env> {
 		return Reader<Env,Env> { $0 }

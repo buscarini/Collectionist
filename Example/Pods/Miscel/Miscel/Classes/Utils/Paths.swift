@@ -10,18 +10,19 @@ import Foundation
 
 public struct PathUtils {
 	public static func docsDirUrl() -> NSURL? {
-		return NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
+		return FileManager.default().urlsForDirectory(.documentDirectory, inDomains: .userDomainMask).first
 	}
 	
 	public static func getFileName(id: String, pathExtension: String) -> String {
-		return self.appendExtension(pathExtension)(fileName: self.escapeFileName(id))
+		return self.appendExtension(pathExtension: pathExtension)(fileName: self.escapeFileName(string: id))
 	}
 	
 	public static func escapeFileName(string: String) -> String {
 		let escapes = [ "/", "\\", "\n", ":" , "?", "&", "=" ]
 		return escapes.reduce(string) {
 			string, escape in
-			return string.stringByReplacingOccurrencesOfString(escape, withString: "")
+			return string.replacingOccurrences(of: escape, with: "")
+//			return string.stringByReplacingOccurrencesOfString(escape, withString: "")
 		}
 	}
 	
@@ -32,7 +33,7 @@ public struct PathUtils {
 				return fileName
 			}
 			else {
-				return url.URLByAppendingPathExtension(pathExtension).path ?? fileName
+				return url.appendingPathExtension(pathExtension)?.path ?? fileName
 			}
 		}
 	}
