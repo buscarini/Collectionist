@@ -9,7 +9,7 @@ PODS:
 DEPENDENCIES:
   - Collectionist (from `../`)
   - Layitout (from `https://github.com/buscarini/layitout.git`, branch `feature/Swift3`)
-  - Miscel (from `https://github.com/buscarini/miscel.git`, branch `feature/swift3`)
+  - Miscel (from `https://github.com/buscarini/miscel.git`, branch `feature/Swift3`)
 
 EXTERNAL SOURCES:
   Collectionist:
@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
     :branch: feature/Swift3
     :git: https://github.com/buscarini/layitout.git
   Miscel:
-    :branch: feature/swift3
+    :branch: feature/Swift3
     :git: https://github.com/buscarini/miscel.git
 
 CHECKOUT OPTIONS:
@@ -34,6 +34,6 @@ SPEC CHECKSUMS:
   Layitout: 8ab04d3f4d09b945fca1a55902b2a993376056b8
   Miscel: 05fe6271486c0acdf9077bfa9cddf6811c0427b7
 
-PODFILE CHECKSUM: ab4619b4686ba1b1fd0dc46a97cb8daa52be4cb2
+PODFILE CHECKSUM: 2ea2c438c0d21243182427b3352d8fd6da6aec24
 
 COCOAPODS: 1.0.0

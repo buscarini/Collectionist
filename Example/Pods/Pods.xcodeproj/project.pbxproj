@@ -58,6 +58,7 @@
 		A3497225F83E0AF87E191928AB3C3F75 /* UIView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F1C7A15AF9D6ED5848F0061222021D /* UIView+Utils.swift */; };
 		A57C494367EF51206D8528279D71B693 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DFC4A833BDE36D020E4FBBF2461E104 /* Foundation.framework */; };
 		A697D37DD7683D25D6F97B42F7368F95 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B06456911A19A60688561565A4E678 /* Layout.swift */; };
+		ACFC0A6B1D2E63D80022C62A /* ColumnsRowsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFC0A6A1D2E63D80022C62A /* ColumnsRowsLayout.swift */; };
 		AF7A7E53E531468193FEA50B11CA981F /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B1EE13720F2EA79E039461C3EFC02 /* CollectionViewCell.swift */; };
 		B0CC6A366B1BFF62C2DA0D19F21A7B4C /* ListItemActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C479AFC09F9080C4F6C7241892397 /* ListItemActionStyle.swift */; };
 		B0D1531836446003AC55FFAB9A5BE892 /* Dictionary+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8671D5FC3513ACB19AD87A27739B1D12 /* Dictionary+Utils.swift */; };
@@ -205,6 +206,7 @@
 		A1CB4CF5C385E15E7424B9F6D1EA6C80 /* ListItemAction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListItemAction.swift; sourceTree = "<group>"; };
 		A23E98EC1F041A4E8399A64D09611537 /* DeviceValue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceValue.swift; sourceTree = "<group>"; };
 		AB286F38EBCDDA45A025860D1E381984 /* Boolean.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Boolean.swift; path = Miscel/Classes/Functions/Boolean.swift; sourceTree = "<group>"; };
+		ACFC0A6A1D2E63D80022C62A /* ColumnsRowsLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnsRowsLayout.swift; sourceTree = "<group>"; };
 		AE36ECEE08F3FE0858625F3BF491D48A /* Miscel-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Miscel-prefix.pch"; sourceTree = "<group>"; };
 		B3FFE15982CBF91DFCE877590BAC4CD9 /* Pods-Collectionist_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Collectionist_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		B4D3503F0E7F7F0DCEC64C295F8E1A01 /* Pods-Collectionist_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Collectionist_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 		2C5C1B9E31CE12D7D8C26C76884413C7 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
+				ACFC0A691D2E63D80022C62A /* Layouts */,
 				54F523AFADF9186EBBB9C92A89AF24D8 /* CollectionListConfiguration.swift */,
 				A09B1EE13720F2EA79E039461C3EFC02 /* CollectionViewCell.swift */,
 				FF9D8B948671AA0A2343176E9267D901 /* CollectionViewDataSource.swift */,
@@ -490,6 +493,14 @@
 			);
 			name = "Support Files";
 			path = "Example/Pods/Target Support Files/Collectionist";
+			sourceTree = "<group>";
+		};
+		ACFC0A691D2E63D80022C62A /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				ACFC0A6A1D2E63D80022C62A /* ColumnsRowsLayout.swift */,
+			);
+			path = Layouts;
 			sourceTree = "<group>";
 		};
 		ADD625E07AB547E7FFB1BA9030114CEC /* Pods-Collectionist_Example */ = {
@@ -766,6 +777,7 @@
 				9D53AE9D3F03F3BA5DF5F4A7BB3318EF /* ListHeaderFooter+Utils.swift in Sources */,
 				69763606CAF533817551160340E1D727 /* ListHeaderFooter.swift in Sources */,
 				841EB37348D79F14557C10B0971660CD /* ListItem.swift in Sources */,
+				ACFC0A6B1D2E63D80022C62A /* ColumnsRowsLayout.swift in Sources */,
 				5749AEC3A3B838EDAB04D7F486EF6EB1 /* ListItemAction.swift in Sources */,
 				B0CC6A366B1BFF62C2DA0D19F21A7B4C /* ListItemActionStyle.swift in Sources */,
 				F175996651C18645F0B0F71F891F4925 /* ListItemConfiguration.swift in Sources */,
