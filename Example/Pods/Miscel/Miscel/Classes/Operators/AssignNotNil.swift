@@ -8,11 +8,13 @@
 
 import Foundation
 
-infix operator ?= {
-    associativity right
-    precedence 90
-    assignment
-}
+infix operator ?=: Additive
+
+//infix operator ?= {
+//    associativity right
+//    precedence 90
+//    assignment
+//}
 
 public func ?= <T>(lhs: inout T, rhs: T?) {
     lhs = rhs ?? lhs

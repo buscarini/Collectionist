@@ -11,7 +11,7 @@ import Foundation
 extension NSAttributedString {
 
 	 public func trimmed(_ set: CharacterSet) -> NSAttributedString {
-		var result = self.mutableCopy() as! NSMutableAttributedString
+		let result = self.mutableCopy() as! NSMutableAttributedString
 	
         // Trim leading characters from character set.
 		while true {
@@ -35,7 +35,7 @@ extension NSAttributedString {
 			result.replaceCharacters(in: range, with: "")
 		}
 		
-		return result as! NSAttributedString
+		return result as NSAttributedString
     }
 }
 

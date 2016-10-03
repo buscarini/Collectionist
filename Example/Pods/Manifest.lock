@@ -26,7 +26,7 @@ CHECKOUT OPTIONS:
     :commit: c10134aec75dffc9e84eb7609d06ccd4d2f36e62
     :git: https://github.com/buscarini/layitout.git
   Miscel:
-    :commit: 9adbb9cb9e9fad139db7ed31590257d5ab3d8bd8
+    :commit: 5f5bc6ad0412ebb445adf17c39b869faa786c8cf
     :git: https://github.com/buscarini/miscel.git
 
 SPEC CHECKSUMS:
