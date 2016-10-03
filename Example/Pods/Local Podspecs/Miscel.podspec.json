@@ -1,6 +1,6 @@
 {
   "name": "Miscel",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "summary": "Miscellaneous Swift Utilities",
   "description": "Miscellaneous Swift Utilities",
   "homepage": "https://github.com/buscarini/Miscel",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/buscarini/Miscel.git",
-    "tag": "0.1.9"
+    "tag": "0.2.0"
   },
   "platforms": {
     "ios": "8.0",

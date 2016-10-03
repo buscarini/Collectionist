@@ -8,11 +8,11 @@
 
 import UIKit
 
-public class ColumnsRowsLayout: UICollectionViewFlowLayout {
+open class ColumnsRowsLayout: UICollectionViewFlowLayout {
 	public typealias Value = DeviceValue<CGFloat>
 
-	public var columns: Value
-	public var rows: Value
+	open var columns: Value
+	open var rows: Value
 	
 	public init(columns: Value, rows: Value) {
 		self.columns = columns
@@ -32,32 +32,32 @@ public class ColumnsRowsLayout: UICollectionViewFlowLayout {
 		self.enableOrientationInfo()
 	}
 	
-	override public func prepareLayout() {
+	override open func prepare() {
 		if let viewSize = collectionView?.bounds.size {
 			self.updateItemSize(viewSize)
 		}
 		
-		super.prepareLayout()
+		super.prepare()
 	}
 	
-	private func enableOrientationInfo() {
-		UIDevice.currentDevice().beginGeneratingDeviceOrientationNotifications()
+	fileprivate func enableOrientationInfo() {
+		UIDevice.current.beginGeneratingDeviceOrientationNotifications()
 	}
 
-	override public func shouldInvalidateLayoutForBoundsChange(_ newBounds: CGRect) -> Bool {
+	override open func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
 		updateItemSize(newBounds.size)
 		return true
 	}
 
-	private func updateItemSize(viewSize: CGSize) {
-		let deviceOrientation = UIDevice.currentDevice().orientation
+	fileprivate func updateItemSize(_ viewSize: CGSize) {
+		let deviceOrientation = UIDevice.current.orientation
 		
 		self.itemSize = self.itemSize(viewSize,
 										columns: self.columns.value(deviceOrientation),
 										rows: self.rows.value(deviceOrientation))
 	}
 	
-	private func itemSize(viewSize: CGSize, columns: CGFloat, rows: CGFloat) -> CGSize {
+	fileprivate func itemSize(_ viewSize: CGSize, columns: CGFloat, rows: CGFloat) -> CGSize {
 	
 		let outerMarginH = self.sectionInset.left + self.sectionInset.right
 		let outerMarginV = self.sectionInset.top + self.sectionInset.bottom
@@ -65,11 +65,11 @@ public class ColumnsRowsLayout: UICollectionViewFlowLayout {
 		let width = itemLength(viewSize.width, numItems: columns, outerMargin: outerMarginH, innerMargin: self.minimumInteritemSpacing)
 		let height = itemLength(viewSize.height, numItems: rows, outerMargin: outerMarginV, innerMargin: self.minimumLineSpacing)
 		
-		return CGSizeMake(width, height)
+		return CGSize(width: width, height: height)
 	
 	}
 	
-	private func itemLength(viewLength: CGFloat, numItems: CGFloat, outerMargin: CGFloat, innerMargin: CGFloat) -> CGFloat {
+	fileprivate func itemLength(_ viewLength: CGFloat, numItems: CGFloat, outerMargin: CGFloat, innerMargin: CGFloat) -> CGFloat {
 		let numOuterMargins: CGFloat = 2.0;
 		let numInnerMargins = numItems-1;
 	

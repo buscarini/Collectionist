@@ -8,13 +8,13 @@
 
 import UIKit
 
-public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT: Equatable>: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
+open class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT: Equatable>: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
 
 	public typealias ListType = List<T,HeaderT, FooterT>
 	public typealias ListSectionType = ListSection<T,HeaderT, FooterT>
 	public typealias ListItemType = ListItem<T>
 
-	private var refreshControl: UIRefreshControl?
+	fileprivate var refreshControl: UIRefreshControl?
 
 	public init(view: UICollectionView) {
 		self.view = view
@@ -23,36 +23,36 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 
 		super.init()
 		
-		self.refreshControl?.addTarget(self, action: "refresh:", for: .valueChanged)
+		self.refreshControl?.addTarget(self, action: #selector(CollectionViewDataSource.refresh(_:)), for: .valueChanged)
 
 		self.viewChanged()
 	}
 	
-	public var view : UICollectionView {
+	open var view : UICollectionView {
 		didSet {
 			self.viewChanged()
 		}
 	}
 	
-	public var list : ListType? {
+	open var list : ListType? {
 		didSet {
 			CollectionViewDataSource.registerViews(self.list, collectionView: self.view)
 			self.update(oldValue, newList: list)
 		}
 	}
 	
-	private func viewChanged() {
+	fileprivate func viewChanged() {
 		CollectionViewDataSource.registerViews(self.list, collectionView: self.view)
 			
 		self.view.dataSource = self
 		self.view.delegate = self			
 	}
 	
-	private func update(_ oldList: ListType?, newList: ListType?) {
+	fileprivate func update(_ oldList: ListType?, newList: ListType?) {
 		self.updateView(oldList, newList: newList)
 		
 		self.refreshControl?.endRefreshing()
-		if let refreshControl = self.refreshControl where newList?.configuration?.onRefresh != nil {
+		if let refreshControl = self.refreshControl , newList?.configuration?.onRefresh != nil {
 			self.view.addSubview(refreshControl)
 			self.view.alwaysBounceVertical = true
 		}
@@ -60,16 +60,16 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 			self.refreshControl?.removeFromSuperview()
 		}
 
-		if let list = newList, let scrollInfo = self.list?.scrollInfo, let indexPath = scrollInfo.indexPath where ListType.indexPathInsideBounds(list, indexPath: indexPath) {
+		if let list = newList, let scrollInfo = self.list?.scrollInfo, let indexPath = scrollInfo.indexPath , ListType.indexPathInsideBounds(list, indexPath: indexPath) {
 		
 			self.view.scrollToItem(at: indexPath, at: CollectionViewDataSource.scrollPositionWithPosition(scrollInfo.position, collectionView: self.view), animated: scrollInfo.animated)
 		}
 	}
 	
-	private func updateView(_ oldList: ListType?, newList: ListType?) {
-		if	let oldList = oldList, let newList = newList where ListType.sameItemsCount(oldList, newList) {
+	fileprivate func updateView(_ oldList: ListType?, newList: ListType?) {
+		if	let oldList = oldList, let newList = newList , ListType.sameItemsCount(oldList, newList) {
 			
-			let visibleIndexPaths = view.indexPathsForVisibleItems()
+			let visibleIndexPaths = view.indexPathsForVisibleItems
 			
 //			let listItems: [ListItem<T>?] = visibleIndexPaths.map { indexPath -> ListItem<T>? in
 //				guard let item = indexPath.item else { return nil }
@@ -88,8 +88,7 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 //			}
 			
 			for indexPath in visibleIndexPaths {
-				guard let item = indexPath.item else { continue }
-			
+				let item = indexPath.item
 				let cell = view.cellForItem(at: indexPath)
 				let listItem = newList.sections[indexPath.section].items[item]
 				if let fillableCell = cell as? Fillable {
@@ -131,7 +130,7 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 		}
 	}
 	
-	public static func registerViews(_ list: ListType?, collectionView : UICollectionView?) {
+	open static func registerViews(_ list: ListType?, collectionView : UICollectionView?) {
 		guard let list = list else { return }
 		
 		let allReusableIds = List.allReusableIds(list)
@@ -149,11 +148,11 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 	}
 	
 	// MARK: UICollectionViewDataSource
-	public func numberOfSections(in collectionView: UICollectionView) -> Int {
+	open func numberOfSections(in collectionView: UICollectionView) -> Int {
 		return self.list?.sections.count ?? 0
 	}
 	
-	public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		guard let list = self.list else {
 			return 0
 		}
@@ -161,7 +160,7 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 		return list.sections[section].items.count
 	}
 
-	public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+	open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		guard let list = self.list else {
 			fatalError("List is required. We shouldn't be here")
 		}
@@ -176,7 +175,7 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 		return cell
 	}
 	
-	public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+	open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		guard let list = self.list else {
 			return
 		}
@@ -189,7 +188,7 @@ public class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT:
 	}
 	
 	// MARK : UICollectionViewDelegate
-	public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+	open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		guard let list = self.list else {
 			return
 		}

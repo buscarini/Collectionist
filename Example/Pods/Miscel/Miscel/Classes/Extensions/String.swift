@@ -25,7 +25,7 @@ public extension String {
 	}
 	
 	public static func trimmed(_ string: String) -> String {
-		return string.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines())
+		return string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 	}
 	
 	public static func joined(_ components: [String?], separator: String = "\n") -> String {
@@ -47,7 +47,7 @@ public extension String {
 	}
 	
 	public static func wholeRange(_ string: String) -> Range<Index> {
-		return string.startIndex..<string.endIndex
+		return string.characters.startIndex..<string.characters.endIndex
 	}
 	
 	public static func words(_ string: String) -> [String] {

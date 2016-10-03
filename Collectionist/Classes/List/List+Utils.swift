@@ -47,7 +47,7 @@ public extension List {
 //	}
 	
 	public static func isEmpty<T: Equatable>(_ list: List<T,HeaderT,FooterT>) -> Bool {
-		return list.sections.map { $0.items.count }.reduce(0, combine: +)==0
+		return list.sections.map { $0.items.count }.reduce(0, +)==0
 	}
 	
 	public static func itemIndexPath(_ list: ListType, item: T) -> IndexPath? {

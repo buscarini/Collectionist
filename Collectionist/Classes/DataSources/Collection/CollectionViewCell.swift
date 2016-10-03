@@ -10,11 +10,11 @@ import UIKit
 
 import Layitout
 
-public class CollectionViewCell<T : Equatable>: UICollectionViewCell, Fillable {
+open class CollectionViewCell<T : Equatable>: UICollectionViewCell, Fillable {
 	var view : UIView?
 	var nibName : String?
 	
-	public func fill(_ value: Any?) {
+	open func fill(_ value: Any?) {
 		guard let listItem = value as? ListItem<T> else {
 			return
 		}
@@ -47,8 +47,8 @@ public class CollectionViewCell<T : Equatable>: UICollectionViewCell, Fillable {
 			return nil
 		}
 		
-		let views = Bundle.main().loadNibNamed(nibName, owner: self, options: nil)
-		return views.first as? UIView
+		let views = Bundle.main.loadNibNamed(nibName, owner: self, options: nil)
+		return views?.first as? UIView
 	}
 }
 

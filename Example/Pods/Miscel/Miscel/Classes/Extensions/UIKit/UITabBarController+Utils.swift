@@ -9,7 +9,7 @@
 import UIKit
 
 extension UITabBarController {
-	public func replaceViewControllers(viewControllers: [UIViewController], animated: Bool, completion: () -> ()) {
+	public func replaceViewControllers(_ viewControllers: [UIViewController], animated: Bool, completion: @escaping () -> ()) {
 		CATransaction.begin()
 		CATransaction.setCompletionBlock(completion)
 		setViewControllers(viewControllers, animated: animated)

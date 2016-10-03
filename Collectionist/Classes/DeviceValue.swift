@@ -20,7 +20,7 @@ public struct DeviceValue<T> {
 	public var iPadLandscape: T?
 	
 	public func value(_ orientation: UIDeviceOrientation) -> T {
-		let idiom = UIDevice.current().userInterfaceIdiom
+		let idiom = UIDevice.current.userInterfaceIdiom
 		switch (idiom, orientation.isPortrait, orientation.isLandscape) {
 			case (.pad, true, false):
 				return self.iPad ?? self.defaultValue

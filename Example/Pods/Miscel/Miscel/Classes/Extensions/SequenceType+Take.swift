@@ -10,11 +10,11 @@ import Foundation
 
 extension Sequence where SubSequence : Sequence, SubSequence.Iterator.Element == Iterator.Element, SubSequence.SubSequence == SubSequence {
 
-	func takeFirst(n: Int = 1) -> AnySequence<Self.Iterator.Element> {
+	func takeFirst(_ n: Int = 1) -> AnySequence<Self.Iterator.Element> {
 		return self.prefix(n)
 	}
 	
-	func takeLast(n: Int = 1) -> AnySequence<Self.Iterator.Element> {
+	func takeLast(_ n: Int = 1) -> AnySequence<Self.Iterator.Element> {
 		return self.suffix(n)
 	}
 }

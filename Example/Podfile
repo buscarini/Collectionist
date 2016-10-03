@@ -2,8 +2,8 @@ use_frameworks!
 
 target 'Collectionist_Example' do
 
-	pod 'Layitout', :git => 'https://github.com/buscarini/layitout.git', :branch => 'feature/Swift3'
-	pod 'Miscel', :git => 'https://github.com/buscarini/miscel.git', :branch => 'feature/Swift3'
+	pod 'Layitout', :git => 'https://github.com/buscarini/layitout.git', :branch => 'develop'
+	pod 'Miscel', :git => 'https://github.com/buscarini/miscel.git', :branch => 'develop'
 	
 	pod 'Collectionist', :path => '../'
 

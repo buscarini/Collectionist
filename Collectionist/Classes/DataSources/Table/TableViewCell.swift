@@ -12,14 +12,10 @@ import Layitout
 
 public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 
-	public var view : UIView?
+	open var view : UIView?
 	var nibName : String?
 	
-	public init(reuseId: String) {
-		super.init(style: .default, reuseIdentifier: reuseId)
-	}
-	
-	public func fill(_ value: Any?) {
+	open func fill(_ value: Any?) {
 		guard let listItem = value as? ListItem<T> else {
 			return
 		}
@@ -53,7 +49,7 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 	func update(_ config: TableListItemConfiguration<T>?) {
 		guard let config = config else { return }
 		self.accessoryType = config.accessoryType
-		self.separatorInset = config.separatorInset ?? UIEdgeInsetsZero
+		self.separatorInset = config.separatorInset ?? UIEdgeInsets.zero
 		_ = config.indentationLevel.map { self.indentationLevel = $0 }
 		_ = config.indentationWidth.map { self.indentationWidth = $0 }
 	}
@@ -63,7 +59,7 @@ public class TableViewCell<T : Equatable>: UITableViewCell, Fillable {
 			return nil
 		}
 		
-		let views = Bundle.main().loadNibNamed(nibName, owner: self, options: nil)
-		return views.first as? UIView
+		let views = Bundle.main.loadNibNamed(nibName, owner: self, options: nil)
+		return views?.first as? UIView
 	}	
 }

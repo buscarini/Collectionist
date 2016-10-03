@@ -20,11 +20,11 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	private var estimatedHeights : [IndexPath: CGFloat] = [:]
 	private var heights : [IndexPath: CGFloat] = [:]
 	
-	private var refreshControl: UIRefreshControl?
+	fileprivate var refreshControl: UIRefreshControl?
 
 	public var viewDidScroll : (() -> ())? = nil
 	
-	private lazy var updateQueue: DispatchQueue = DispatchQueue(label: "TableDataSource update queue", attributes: .serial)
+	private lazy var updateQueue: DispatchQueue = DispatchQueue(label: "TableDataSource update queue")
 	
 	public init(view: UITableView) {
 		self.view = view
@@ -92,7 +92,7 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	
 		self.updateQueue.async {
 //		dispatch_async(self.updateQueue) {
-			if	let oldList = oldList, let newList = newList where ListType.sameItemsCount(oldList, newList) {
+			if	let oldList = oldList, let newList = newList , ListType.sameItemsCount(oldList, newList) {
 				
 				let visibleIndexPaths = self.view.indexPathsForVisibleRows
 				let changedIndexPaths = ListType.itemsChangedPaths(oldList, newList).filter {
@@ -107,7 +107,7 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 						self.heights = TableViewDataSource.updateIndexPathsWithFill(newList, view: self.view, indexPaths: changedIndexPaths, cellHeights: self.heights)
 
 
-						if let currentList = self.list where currentList == newList {
+						if let currentList = self.list , currentList == newList {
 							self.view.beginUpdates()
 							self.view.endUpdates()
 							completion?()
@@ -152,7 +152,7 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	
 	private func updatePullToRefresh(_ newList: ListType?) {
 		self.refreshControl?.endRefreshing()
-		if let refreshControl = self.refreshControl where newList?.configuration?.onRefresh != nil {
+		if let refreshControl = self.refreshControl , newList?.configuration?.onRefresh != nil {
 			self.view.addSubview(refreshControl)
 		}
 		else {
@@ -324,14 +324,14 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	
 	// MARK: UITableViewDelegate
 	public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-		if let tableConfiguration = self.list?.configuration as? TableListConfiguration, fixedHeight = tableConfiguration.fixedRowHeight {
+		if let tableConfiguration = self.list?.configuration as? TableListConfiguration, let fixedHeight = tableConfiguration.fixedRowHeight {
 			return fixedHeight
 		}
 		return self.estimatedHeights[indexPath] ?? tableView.estimatedRowHeight
 	}
 	
 	public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		if let tableConfiguration = self.list?.configuration as? TableListConfiguration, fixedHeight = tableConfiguration.fixedRowHeight {
+		if let tableConfiguration = self.list?.configuration as? TableListConfiguration, let fixedHeight = tableConfiguration.fixedRowHeight {
 			return fixedHeight
 		}
 		return self.heights[indexPath] ?? UITableViewAutomaticDimension

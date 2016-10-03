@@ -210,12 +210,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Collectionist_Example" */;
 			buildPhases = (
-				45160D255EB0D9AAB70E20FF /* 📦 Check Pods Manifest.lock */,
+				45160D255EB0D9AAB70E20FF /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				36EA37C23CD7D6389A2B4091 /* 📦 Embed Pods Frameworks */,
-				79C687C5A67CF5BF38C2122C /* 📦 Copy Pods Resources */,
+				36EA37C23CD7D6389A2B4091 /* [CP] Embed Pods Frameworks */,
+				79C687C5A67CF5BF38C2122C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -230,12 +230,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Collectionist_Tests" */;
 			buildPhases = (
-				465DF47BC0944F081986E890 /* 📦 Check Pods Manifest.lock */,
+				465DF47BC0944F081986E890 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
-				C37F45F7D241911F7CCC428C /* 📦 Embed Pods Frameworks */,
-				E696924E23DD981B50A67595 /* 📦 Copy Pods Resources */,
+				C37F45F7D241911F7CCC428C /* [CP] Embed Pods Frameworks */,
+				E696924E23DD981B50A67595 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -309,14 +309,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		36EA37C23CD7D6389A2B4091 /* 📦 Embed Pods Frameworks */ = {
+		36EA37C23CD7D6389A2B4091 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,44 +324,44 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Collectionist_Example/Pods-Collectionist_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		45160D255EB0D9AAB70E20FF /* 📦 Check Pods Manifest.lock */ = {
+		45160D255EB0D9AAB70E20FF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		465DF47BC0944F081986E890 /* 📦 Check Pods Manifest.lock */ = {
+		465DF47BC0944F081986E890 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		79C687C5A67CF5BF38C2122C /* 📦 Copy Pods Resources */ = {
+		79C687C5A67CF5BF38C2122C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,14 +369,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Collectionist_Example/Pods-Collectionist_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C37F45F7D241911F7CCC428C /* 📦 Embed Pods Frameworks */ = {
+		C37F45F7D241911F7CCC428C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,14 +384,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Collectionist_Tests/Pods-Collectionist_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E696924E23DD981B50A67595 /* 📦 Copy Pods Resources */ = {
+		E696924E23DD981B50A67595 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

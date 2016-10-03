@@ -8,13 +8,13 @@
 
 import Foundation
 
-public func with<T>(constant: T, update: @noescape(inout T) throws ->() ) rethrows -> T {
+public func with<T>(_ constant: T, update: (inout T) throws ->() ) rethrows -> T {
 	var variable = constant
 	try update(&variable)
 	return variable
 }
 
-public func delay(time: TimeInterval, closure: () -> ()) {
+public func delay(_ time: TimeInterval, closure: @escaping () -> ()) {
 	let dispatchTime: DispatchTime = DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-	DispatchQueue.main.after(when: dispatchTime, execute: closure)
+	DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: closure)
 }

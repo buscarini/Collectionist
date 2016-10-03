@@ -9,8 +9,8 @@
 import Foundation
 
 public struct TypeUtils {
-	public static func name(thing: Any) -> String {
-		return String(thing.self)
+	public static func name(_ thing: Any) -> String {
+		return String(describing: thing.self)
 	}
 }
 

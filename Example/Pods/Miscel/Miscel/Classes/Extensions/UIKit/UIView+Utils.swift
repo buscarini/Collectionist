@@ -71,7 +71,7 @@ public extension UIView {
 
 // MARK: Corners
 public extension UIView {
-	public func roundCorners(radius: CGFloat? = nil) {
+	public func roundCorners(_ radius: CGFloat? = nil) {
 		self.layer.cornerRadius = radius ?? min(self.width/4.0, self.height/4.0)
 		self.layer.masksToBounds = true
 	}

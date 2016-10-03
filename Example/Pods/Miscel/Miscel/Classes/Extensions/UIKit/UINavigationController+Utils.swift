@@ -9,21 +9,21 @@
 import UIKit
 
 extension UINavigationController {
-	public func pushViewController(viewController: UIViewController, animated: Bool, completion: () -> ()) {
+	public func pushViewController(_ viewController: UIViewController, animated: Bool, completion: @escaping () -> ()) {
 		CATransaction.begin()
 		CATransaction.setCompletionBlock(completion)
 		pushViewController(viewController, animated: animated)
 		CATransaction.commit()
 	}
 
-	public func popViewController(animated: Bool, completion: () -> ()) {
+	public func popViewController(_ animated: Bool, completion: @escaping () -> ()) {
 		CATransaction.begin()
 		CATransaction.setCompletionBlock(completion)
 		popViewController(animated: animated)
 		CATransaction.commit()
 	}
 	
-	public func replaceViewControllers(viewControllers: [UIViewController], animated: Bool, completion: () -> ()) {
+	public func replaceViewControllers(_ viewControllers: [UIViewController], animated: Bool, completion: @escaping () -> ()) {
 		CATransaction.begin()
 		CATransaction.setCompletionBlock(completion)
 		setViewControllers(viewControllers, animated: animated)

@@ -16,6 +16,7 @@ extension UIViewController {
 			child.view.translatesAutoresizingMaskIntoConstraints = false
 			inView.addSubview(child.view)
 			Layout.fill(container: inView, view: child.view)
+			inView.bringSubview(toFront: child.view)
 		}
 	}
 
@@ -30,6 +31,12 @@ extension UIViewController {
 		child.willMove(toParentViewController: self)
 		child.view.removeFromSuperview()
 		child.removeFromParentViewController()
+	}
+	
+	public func removeChildViewControllers() {
+		for child in childViewControllers {
+			self.unembed(child)
+        }
 	}
 }
 
