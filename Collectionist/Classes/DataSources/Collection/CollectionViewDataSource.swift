@@ -60,8 +60,9 @@ open class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT: E
 			self.refreshControl?.removeFromSuperview()
 		}
 
-		if let list = newList, let scrollInfo = self.list?.scrollInfo, let indexPath = scrollInfo.indexPath , ListType.indexPathInsideBounds(list, indexPath: indexPath) {
+		if let list = newList, let scrollInfo = self.list?.scrollInfo, ListType.indexPathInsideBounds(list, indexPath: scrollInfo.indexPath) {
 		
+			let indexPath = scrollInfo.indexPath
 			self.view.scrollToItem(at: indexPath, at: CollectionViewDataSource.scrollPositionWithPosition(scrollInfo.position, collectionView: self.view), animated: scrollInfo.animated)
 		}
 	}

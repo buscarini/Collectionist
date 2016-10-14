@@ -9,9 +9,15 @@
 import Foundation
 
 public struct ListScrollInfo: Equatable {
-	public let indexPath: IndexPath?
+	public let indexPath: IndexPath
 	public let position: ListScrollPosition
-	public let animated: Bool = true
+	public let animated: Bool
+	
+	public init(indexPath: IndexPath, position: ListScrollPosition, animated: Bool = true) {
+		self.indexPath = indexPath
+		self.position = position
+		self.animated = animated
+	}
 }
 
 public func ==(lhs: ListScrollInfo, rhs: ListScrollInfo) -> Bool {

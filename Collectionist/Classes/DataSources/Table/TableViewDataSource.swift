@@ -145,7 +145,8 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 	}
 	
 	private func updateScroll(_ newList: ListType?) {
-		if let scrollInfo = newList?.scrollInfo, let indexPath = scrollInfo.indexPath {
+		if let scrollInfo = newList?.scrollInfo {
+			let indexPath = scrollInfo.indexPath
 			self.view.scrollToRow(at: indexPath, at: TableViewDataSource.scrollPositionWithPosition(scrollInfo.position), animated: scrollInfo.animated)
 		}
 	}
