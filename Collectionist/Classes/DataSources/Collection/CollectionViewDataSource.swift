@@ -68,25 +68,9 @@ open class CollectionViewDataSource<T: Equatable, HeaderT: Equatable, FooterT: E
 	}
 	
 	fileprivate func updateView(_ oldList: ListType?, newList: ListType?) {
-		if	let oldList = oldList, let newList = newList , ListType.sameItemsCount(oldList, newList) {
+		if	let oldList = oldList, let newList = newList, ListType.sameItemsCount(oldList, newList), !List.headersChanged(oldList, newList) {
 			
 			let visibleIndexPaths = view.indexPathsForVisibleItems
-			
-//			let listItems: [ListItem<T>?] = visibleIndexPaths.map { indexPath -> ListItem<T>? in
-//				guard let item = indexPath.item else { return nil }
-//				return newList.sections[indexPath.section].items[item]
-//			}
-//			
-//			let cells = visibleIndexPaths.map {
-//				return view.cellForItem(at: $0)
-//			}
-//			
-//			Zip2Sequence(_sequence1: listItems, _sequence2: cells).map { listItem, cell in
-//				if let fillableCell = cell as? Fillable, let listItem = listItem {
-//					fillableCell.fill(listItem)
-//				}
-//				return nil
-//			}
 			
 			for indexPath in visibleIndexPaths {
 				let item = indexPath.item
