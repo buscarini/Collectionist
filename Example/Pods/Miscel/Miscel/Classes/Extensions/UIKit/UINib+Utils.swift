@@ -9,10 +9,10 @@
 import UIKit
 
 extension UINib {
-	public static func loadNib(owner: AnyObject, nibName: String, bundle: NSBundle? = nil) -> UIView? {
+	public static func loadNib(_ owner: AnyObject, nibName: String, bundle: Bundle? = nil) -> UIView? {
 		guard nibName.characters.count > 0 else { return nil }
 	
-		return UINib(nibName: nibName, bundle: bundle).instantiateWithOwner(owner, options: nil).first as? UIView
+		return UINib(nibName: nibName, bundle: bundle).instantiate(withOwner: owner, options: nil).first as? UIView
 	}
 }
 

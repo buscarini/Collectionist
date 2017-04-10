@@ -11,7 +11,7 @@ import UIKit
 public extension UITableView {
 	public func hideSeparatorsForEmptyRows() {
 		self.tableFooterView = UIView()
-		self.tableFooterView?.backgroundColor = UIColor.clearColor()
+		self.tableFooterView?.backgroundColor = UIColor.clear
 	}
 }
 

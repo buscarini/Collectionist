@@ -14,7 +14,7 @@ public struct ListItemAction<T: Equatable>: Equatable {
 	let tintColor: UIColor
 	let action: (ListItem<T>) -> ()
 	
-	public init(title: String, style: ListItemActionStyle, tintColor: UIColor, action: (ListItem<T>) -> ()) {
+	public init(title: String, style: ListItemActionStyle, tintColor: UIColor, action: @escaping (ListItem<T>) -> ()) {
 		self.title = title
 		self.style = style
 		self.tintColor = tintColor

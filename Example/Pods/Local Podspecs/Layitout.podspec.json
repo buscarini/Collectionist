@@ -1,6 +1,6 @@
 {
   "name": "Layitout",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "summary": "AutoLayout Swift Utils",
   "description": "AutoLayout Swift Utils",
   "homepage": "https://github.com/buscarini/Layitout",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/buscarini/Layitout.git",
-    "tag": "0.1.2"
+    "tag": "0.2.0"
   },
   "platforms": {
     "ios": "8.0",

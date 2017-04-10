@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension CollectionType {
+public extension Collection {
 	
 //	func reduce1(f:(Self.Generator.Element,Self.Generator.Element) -> Self.Generator.Element)(_ xs:[Self.Generator.Element]) -> Self.Generator.Element? {
 //		return self.first.map { x in
@@ -16,25 +16,25 @@ public extension CollectionType {
 //		}
 //	}
 	
-	public func head() -> Self.Generator.Element? {
+	public func head() -> Self.Iterator.Element? {
 		return self.first
 	}
 	
 	public func tail() -> Self.SubSequence {
-		let secondIndex = self.startIndex.advancedBy(1)
+		let secondIndex = self.index(after: self.startIndex)
 
-		return self.suffixFrom(secondIndex)
+		return self.suffix(from: secondIndex)
 	}
 	
-	public func foldr<B>(accm:B, f: (Self.Generator.Element, B) -> B) -> B {
-		var g = self.generate()
+	public func foldr<B>(_ accm:B, f: @escaping (Self.Iterator.Element, B) -> B) -> B {
+		var g = self.makeIterator()
 		func next() -> B {
 			return g.next().flatMap {x in f(x, next())} ?? accm
 		}
 		return next()
 	}
 	
-	public func foldl<B>(accm:B, f: (Self.Generator.Element, B) -> B) -> B {
+	public func foldl<B>(_ accm:B, f: (Self.Iterator.Element, B) -> B) -> B {
 		var result = accm
 		for temp in self {
 			result = f(temp, result)

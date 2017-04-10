@@ -9,15 +9,13 @@
 import Foundation
 
 public protocol ListConfiguration {
+	// MARK: Pull To Refresh
+	var onRefresh : (() -> ())? { get set }
+	var lastUpdated: Date? { get set }
+	var minimumRefreshInterval: TimeInterval? { get set }
 	
-}
-
-public struct TableConfiguration: ListConfiguration, Equatable {
-	let fixedRowHeight: CGFloat?
-}
-
-public func ==(lhs: TableConfiguration, rhs: TableConfiguration) -> Bool {
-	guard lhs.fixedRowHeight == rhs.fixedRowHeight else { return false }
-	return true
+	// MARK: Infinite Scrolling
+	var onLoadMore : (() -> ())? { get set }
+	var loadMoreEnabled : Bool { get set }
 }
 

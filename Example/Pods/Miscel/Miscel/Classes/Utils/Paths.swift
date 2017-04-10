@@ -9,30 +9,31 @@
 import Foundation
 
 public struct PathUtils {
-	public static func docsDirUrl() -> NSURL? {
-		return NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
+	public static func docsDirUrl() -> URL? {
+		return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
 	}
 	
-	public static func getFileName(id: String, pathExtension: String) -> String {
-		return self.appendExtension(pathExtension)(fileName: self.escapeFileName(id))
+	public static func getFileName(name: String, pathExtension: String) -> String {
+		return self.appendExtension(pathExtension)(self.escapeFileName(name))
 	}
 	
-	public static func escapeFileName(string: String) -> String {
+	public static func escapeFileName(_ string: String) -> String {
 		let escapes = [ "/", "\\", "\n", ":" , "?", "&", "=" ]
 		return escapes.reduce(string) {
 			string, escape in
-			return string.stringByReplacingOccurrencesOfString(escape, withString: "")
+			return string.replacingOccurrences(of: escape, with: "")
+//			return string.stringByReplacingOccurrencesOfString(escape, withString: "")
 		}
 	}
 	
-	public static func appendExtension(pathExtension: String) -> (fileName: String) -> String {
+	public static func appendExtension(_ pathExtension: String) -> (_ fileName: String) -> String {
 		return { fileName in
 			let url = NSURL(fileURLWithPath: fileName)
 			if url.pathExtension != nil {
 				return fileName
 			}
 			else {
-				return url.URLByAppendingPathExtension(pathExtension).path ?? fileName
+				return url.appendingPathExtension(pathExtension)?.path ?? fileName
 			}
 		}
 	}

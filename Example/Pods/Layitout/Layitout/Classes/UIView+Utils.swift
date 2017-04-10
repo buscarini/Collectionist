@@ -9,9 +9,13 @@
 import UIKit
 
 public extension UIView {
-	public static func fill(container: UIView, subview: UIView) {
+	public static func fill(_ container: UIView, subview: UIView, margins: UIEdgeInsets = UIEdgeInsets.zero) {
 		container.addSubview(subview)
 		subview.translatesAutoresizingMaskIntoConstraints = false
-		Layout.fill(container, view: subview, priority: UILayoutPriorityRequired)
+		Layout.fill(container: container, view: subview, priority: UILayoutPriorityRequired, margins: margins)
+	}
+	
+	func fill(subview: UIView, margins: UIEdgeInsets = UIEdgeInsets.zero) {
+		UIView.fill(self, subview: subview, margins: margins)
 	}
 }

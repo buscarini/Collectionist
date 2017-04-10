@@ -21,15 +21,15 @@ public struct Writer<T, L: Monoid> {
 		self.log = log
 	}
 	
-	public static func of(value: T) -> Writer {
+	public static func of(_ value: T) -> Writer {
 		return Writer(value, L.unit)
 	}
 	
-	public func map<U>(f: (T) -> (U)) -> Writer<U,L> {
+	public func map<U>(_ f: (T) -> (U)) -> Writer<U,L> {
 		return Writer<U, L>(f(value), log)
 	}
 
-	public func flatMap<U>(f: (T) -> Writer<U, L>) -> Writer<U, L> {
+	public func flatMap<U>(_ f: (T) -> Writer<U, L>) -> Writer<U, L> {
 		let writer = f(value)
 		return Writer<U, L>(writer.value, L.combine(log, writer.log))
 	}

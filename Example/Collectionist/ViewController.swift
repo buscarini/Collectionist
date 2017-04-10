@@ -15,19 +15,25 @@ class ViewController: UIViewController {
 	@IBOutlet var tableView : UITableView?
 
 	var models: [Model] = Model.exampleModels()
-	var dataSource = TableDataSource<Model>()
+	var dataSource: TableViewDataSource<Model, EmptyType, EmptyType>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		self.dataSource.view = self.tableView
-		self.tableView?.delegate = self.dataSource
+		self.dataSource = self.tableView.map {TableViewDataSource<Model, EmptyType, EmptyType>(view: $0) }
+//		self.dataSource.view = self.tableView
+//		self.tableView?.delegate = self.dataSource
 		
 		updateList()
     }
 
 	func updateList() {
-		self.dataSource.list = Collectionist.List<Model>.listFrom(self.models, nibName : "ModelView")
+	
+		let tableConfiguration = TableListConfiguration(onRefresh: {
+			self.updateList()
+		})
+	
+		self.dataSource?.list = Collectionist.List<Model>.listFrom(self.models, nibName : "ModelView", configuration: tableConfiguration)
 	}
 
 }

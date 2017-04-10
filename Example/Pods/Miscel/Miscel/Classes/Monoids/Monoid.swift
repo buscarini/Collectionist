@@ -11,5 +11,5 @@ import Foundation
 public protocol Monoid {
 	static var unit: Self { get }
 	
-	static func combine(left: Self, _ right: Self) -> Self
+	static func combine(_ left: Self, _ right: Self) -> Self
 }

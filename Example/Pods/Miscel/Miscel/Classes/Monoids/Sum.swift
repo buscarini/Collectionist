@@ -19,7 +19,7 @@ public struct Sum: Monoid {
 		return Sum(0)
 	}
 	
-	public static func combine(left: Sum, _ right: Sum) -> Sum {
+	public static func combine(_ left: Sum, _ right: Sum) -> Sum {
 		return Sum(left.value + right.value)
 	}
 }

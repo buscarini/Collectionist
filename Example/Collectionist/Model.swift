@@ -31,7 +31,8 @@ extension Model {
 		
 			let string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 			
-			let substring = string.substringToIndex(string.startIndex.advancedBy(min(numChars,string.characters.count-1)))
+			let substring = string.substring(to: string.index(string.startIndex, offsetBy: min(numChars,string.characters.count-1)))
+//			let substring = string.substringToIndex(string.startIndex.advancedBy(min(numChars,string.characters.count-1)))
 		
 			return Model(name: "model \(index)", text: substring)
 		}
