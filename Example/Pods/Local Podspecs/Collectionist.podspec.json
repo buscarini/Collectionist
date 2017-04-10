@@ -1,6 +1,6 @@
 {
   "name": "Collectionist",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "summary": "View Model based data sources for UITableView and UICollectionView.",
   "description": "View Model based data sources for UITableView and UICollectionView.\n\nUses views instead of cells, which allows to reuse the same view for a table, a collection or insert it in a regular view hierarchy.",
   "homepage": "https://github.com/buscarini/Collectionist",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/buscarini/Collectionist.git",
-    "tag": "0.1.3"
+    "tag": "0.1.4"
   },
   "platforms": {
     "ios": "9.0",
