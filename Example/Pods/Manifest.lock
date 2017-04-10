@@ -1,5 +1,5 @@
 PODS:
-  - Collectionist (0.1.3):
+  - Collectionist (0.1.4):
     - Layitout
     - Miscel
   - Layitout (0.2.0)
@@ -13,7 +13,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Collectionist:
-    :path: ../
+    :path: "../"
   Layitout:
     :branch: develop
     :git: https://github.com/buscarini/layitout.git
@@ -26,14 +26,14 @@ CHECKOUT OPTIONS:
     :commit: c10134aec75dffc9e84eb7609d06ccd4d2f36e62
     :git: https://github.com/buscarini/layitout.git
   Miscel:
-    :commit: 5f5bc6ad0412ebb445adf17c39b869faa786c8cf
+    :commit: 369d82ae6b7bb8d6a9a9d371f889e560bba6abdf
     :git: https://github.com/buscarini/miscel.git
 
 SPEC CHECKSUMS:
-  Collectionist: b3771449fa59d8a3948ee1ea43bfdf3810e3eb16
+  Collectionist: 84f0e684a280cea6ce0302d982dda2a23840c931
   Layitout: b6d3cead8a230e68a76696d9bcb6e5d61a0410a0
   Miscel: 92c72025c654bec31c6768d2d4ba006a347dd59f
 
 PODFILE CHECKSUM: 6595b8c2d0a6aa63f33d980300f56be599ac1e39
 
-COCOAPODS: 1.1.0.beta.1
+COCOAPODS: 1.2.0
