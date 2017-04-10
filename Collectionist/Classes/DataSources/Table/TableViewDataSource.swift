@@ -100,27 +100,31 @@ public class TableViewDataSource<T:Equatable,HeaderT : Equatable, FooterT : Equa
 					return visibleIndexPaths?.contains(indexPath as IndexPath) ?? true
 				}
 				
-				if changedIndexPaths.count>0 {
-					DispatchQueue.main.async {
-//					dispatch_async(dispatch_get_main_queue()) {
-
+				DispatchQueue.main.async {
+					defer { completion?() }
+					
+					if changedIndexPaths.count>0 {
 						self.heights = TableViewDataSource.updateIndexPathsWithFill(newList, view: self.view, indexPaths: changedIndexPaths, cellHeights: self.heights)
 
-
 						if let currentList = self.list , currentList == newList {
-							self.view.beginUpdates()
-							self.view.endUpdates()
-							completion?()
+							if #available(iOS 10.0, *) {
+								self.view.beginUpdates()
+								self.view.reloadRows(at: changedIndexPaths, with: .none)
+								self.view.endUpdates()
+							}
+							else {
+								self.view.reloadData()
+							}
 						}
 						else {
 							self.view.reloadData()
-							completion?()
 						}
+					
 					}
-				}
-				else {
-					DispatchQueue.main.async {
-						completion?()
+					else if List.headersChanged(oldList, newList) {
+						self.view.reloadData()
+					}
+					else {
 					}
 				}
 			}

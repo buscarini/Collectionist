@@ -94,6 +94,27 @@ public extension List {
 			}.count==0
 	}
 	
+	public static func headersChanged(_ list1: List, _ list2: List) -> Bool {
+		let headers1 = list1.sections.map {
+			return $0.header
+		}.flatMap { $0 }
+		
+		let headers2 = list2.sections.map {
+			return $0.header
+		}.flatMap { $0 }
+		
+		let footers1 = list1.sections.map {
+			return $0.footer
+		}.flatMap { $0 }
+		
+		let footers2 = list2.sections.map {
+			return $0.footer
+		}.flatMap { $0 }
+
+		
+		return headers1 != headers2 || footers1 != footers2
+	}
+	
 	public static func itemsChangedPaths<T : Equatable, HeaderT : Equatable, FooterT: Equatable>(_ list1: List<T,HeaderT,FooterT>, _ list2: List<T,HeaderT,FooterT>) -> [IndexPath] {
 		assert(sameItemsCount(list1, list2))
 		
